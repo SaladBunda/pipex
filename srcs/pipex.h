@@ -6,7 +6,7 @@
 /*   By: ael-maaz <ael-maaz@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 22:02:24 by ael-maaz          #+#    #+#             */
-/*   Updated: 2024/04/24 00:37:19 by ael-maaz         ###   ########.fr       */
+/*   Updated: 2024/04/24 22:34:08 by ael-maaz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@
 
 /*get next line functions*/
 char	*get_next_line(int fd);
-int		ft_strchr(const char *s, int c);
+int		ft_strchr_g(const char *s, int c);
 char	*ft_strjoin(char *s1, char *s2);
 char	*ft_strdup(const char *s1);
 int		ft_strlen(const char *s);
@@ -31,6 +31,11 @@ void	*ft_memfunc(void *b, void *s, int c, size_t len);
 /*ft_split functions*/
 void	*ft_memcpy(void *dst, const void *src, size_t n);
 char	**ft_split(char const *s, char c);
+/* extra functions */
+char	*ft_strchr(const char *s, int c);
+char	*ft_strtrim(char const *s1, char const *set);
+char	*ft_strjoin_p(char *s1, char *s2);
+
 
 
 #endif

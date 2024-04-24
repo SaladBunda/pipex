@@ -6,7 +6,7 @@
 /*   By: ael-maaz <ael-maaz@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 01:45:08 by ael-maaz          #+#    #+#             */
-/*   Updated: 2024/04/24 02:11:47 by ael-maaz         ###   ########.fr       */
+/*   Updated: 2024/04/24 21:19:45 by ael-maaz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,46 +50,51 @@ int main(int ac, char **av, char **env)
 	// 	printf("parent\n");
 	// 	wait(NULL);
 	// }
-	char *cmd[4];
-cmd[0]="/bin/ls";
-cmd[1]="-l";
-cmd[2]="-a";
-cmd[3]=NULL;
-	int fd[2];
-	if(pipe(fd)== -1)
-		return 1;
-	pid_t pid=fork();
-	if(pid == -1)
-		return 1;
-	if(pid == 0)
-	{
-		printf("im child1\n");
-		dup2(fd[1],STDOUT_FILENO);
-		close(fd[0]);
-		close(fd[1]);
-		execv("/bin/ls",cmd);
-		perror("command");
-	}
+// 	char *cmd[4];
+// cmd[0]="/bin/ls";
+// cmd[1]="-l";
+// cmd[2]="-a";
+// cmd[3]=NULL;
+// 	int fd[2];
+// 	if(pipe(fd)== -1)
+// 		return 1;
+// 	pid_t pid=fork();
+// 	if(pid == -1)
+// 		return 1;
+// 	if(pid == 0)
+// 	{
+// 		printf("im child1\n");
+// 		dup2(fd[1],STDOUT_FILENO);
+// 		close(fd[0]);
+// 		close(fd[1]);
+// 		execv("/bin/ls",cmd);
+// 		perror("command");
+// 	}
 
-char *cmd2[4];
-	cmd2[0]="/usr/bin/wc";
-	cmd2[1]="-l";
-	cmd2[2]=NULL;
-	pid_t pid2 = fork();
-	if(pid2 == -1)
-		return 1;
-	if(pid2 == 0)
+// char *cmd2[4];
+// 	cmd2[0]="/usr/bin/wc";
+// 	cmd2[1]="-l";
+// 	cmd2[2]=NULL;
+// 	pid_t pid2 = fork();
+// 	if(pid2 == -1)
+// 		return 1;
+// 	if(pid2 == 0)
+// 	{
+// 		printf("im child2\n");
+// 		dup2(fd[0],STDIN_FILENO);
+// 		close(fd[0]);
+// 		close(fd[1]);
+// 		execv("/usr/bin/wc",cmd2);
+// 		perror("command");
+// 	}
+// 	close(fd[0]);
+// 	close(fd[1]);
+// 	waitpid(pid,NULL,0);
+// 	waitpid(pid2,NULL,0);
+	int i = 0;
+	while(i < 20)
 	{
-		printf("im child2\n");
-		dup2(fd[0],STDIN_FILENO);
-		close(fd[0]);
-		close(fd[1]);
-		execv("/usr/bin/wc",cmd2);
-		perror("command");
+		printf("%s\n",env[i++]);
 	}
-	close(fd[0]);
-	close(fd[1]);
-	waitpid(pid,NULL,0);
-	waitpid(pid2,NULL,0);
-	
+	printf("access:%d\n",access("/bin/cst",X_OK));
 }
