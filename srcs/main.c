@@ -6,7 +6,7 @@
 /*   By: ael-maaz <ael-maaz@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 22:01:50 by ael-maaz          #+#    #+#             */
-/*   Updated: 2024/04/24 22:40:41 by ael-maaz         ###   ########.fr       */
+/*   Updated: 2024/04/25 18:19:21 by ael-maaz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ char ** check_args(int ac, char **av, char **env)
 	printf("invalidcommand\n");
 	exit(1);
 	return cmd;
-}
+}     
 
 int main(int ac, char **av, char **env)
 {
