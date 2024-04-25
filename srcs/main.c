@@ -6,7 +6,7 @@
 /*   By: ael-maaz <ael-maaz@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 22:01:50 by ael-maaz          #+#    #+#             */
-/*   Updated: 2024/04/25 18:19:21 by ael-maaz         ###   ########.fr       */
+/*   Updated: 2024/04/25 22:36:49 by ael-maaz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,29 +31,26 @@ char **second_arg(char **av)
 	cmd = ft_split(av[2], ' ');
 	return cmd;
 }
-char ** check_args(int ac, char **av, char **env)
+char **check_args(int ac, char **av, char **env, char ***cmd2, int *i)
 {
 	// (void)env;
 	(void)ac;
 	
 	char **cmd;
-	char **cmd2;
 	first_arg(av);
 	cmd = second_arg(av);
-	cmd2 = ft_split(env[4],':');
-	cmd2[0]=ft_strtrim(cmd2[0],"PATH=");
-	int i = 0;
-	while(cmd2[i])
+	(*cmd2) = ft_split(env[4],':');
+	(*cmd2)[0]=ft_strtrim((*cmd2)[0],"PATH=");
+	while((*cmd2)[*i])
 	{
-		if(access(ft_strjoin_p(cmd2[i],cmd[0]),X_OK) != -1)
+		if(access(ft_strjoin_p((*cmd2)[*i],cmd[0]),X_OK) != -1)
 		{
 			printf("valid command\n");
-			exit(0);
+			break;
 		}
-		i++;
+		(*i)++;
 	}
-	printf("invalidcommand\n");
-	exit(1);
+	printf("path is:%s\n",(*cmd2)[*i]);
 	return cmd;
 }     
 
@@ -62,34 +59,45 @@ int main(int ac, char **av, char **env)
 	if (ac == 5)
 	{
 		char **cmd;
-		// int fid;
-		// int pfd[2];
-		cmd = check_args(ac,av,env);
-		// if(pipe(pfd) == -1)
-		// 	return 1;
-		// fid = fork();
-		// if(fid == -1)
-		// {
-		// 	perror("Fork:");
-		// 	exit(EXIT_FAILURE);
-		// }
-		// if(fid == 0)
-		// {
-		// 	close(pfd[0]);
-		// 	write(pfd[1],"bunda\n",6);
-		// 	close(pfd[1]);
-		// 	printf("child\n");
-		// 	execv("/bin/cat",env);
-		// 	return 0;
-		// }
+		char **cmd2 = NULL;
+		int fid;
+		int pfd[2];
+		int i= 0;
+		int outfile = open("outfile.txt", O_RDWR | O_CREAT, 777);
+		cmd = check_args(ac,av,env,&cmd2,&i);
+		printf("path:%s\n",ft_strjoin_p(cmd2[i],cmd[0]));
+		int infile;
+		infile = open(av[1],O_RDONLY);
+		if(infile == -1)
+			return(perror("infile:"),0);
+		if(pipe(pfd) == -1)
+			return (perror("pipe\n"),1);
+		fid = fork();
+		if(fid == -1)
+		{
+			perror("Fork:");
+			exit(EXIT_FAILURE);
+		}
+		if(fid == 0)
+		{
+			dup2(STDIN_FILENO,infile);
+			close(pfd[0]);
+			dup2(outfile,STDOUT_FILENO);
+			close(outfile);
+			// printf("child\n");
+			execv(ft_strjoin_p(cmd2[i],cmd[0]),cmd);
+			return 0;
+		}
 		// else
 		// {
 		// 	char str[20];
-		// 	close(pfd[1]);
+			close(pfd[1]);
 		// 	read(pfd[0],str,6);
-		// 	close(pfd[0]);
+			close(pfd[0]);
 		// 	printf("parent\n");
-		// 	wait(NULL);
+		close(outfile);
+		close(infile);
+			waitpid(0,NULL,0);
 		// }
 	}
 }
