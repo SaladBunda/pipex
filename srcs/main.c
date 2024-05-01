@@ -6,7 +6,7 @@
 /*   By: ael-maaz <ael-maaz@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 22:01:50 by ael-maaz          #+#    #+#             */
-/*   Updated: 2024/04/25 22:36:49 by ael-maaz         ###   ########.fr       */
+/*   Updated: 2024/05/01 20:52:28 by ael-maaz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,9 +63,9 @@ int main(int ac, char **av, char **env)
 		int fid;
 		int pfd[2];
 		int i= 0;
-		int outfile = open("outfile.txt", O_RDWR | O_CREAT, 777);
+		int outfile = open("outfile.txt", O_RDWR | O_CREAT | O_APPEND, 0644);
 		cmd = check_args(ac,av,env,&cmd2,&i);
-		printf("path:%s\n",ft_strjoin_p(cmd2[i],cmd[0]));
+		printf("main path:%s\n",ft_strjoin_p(cmd2[i],cmd[0]));
 		int infile;
 		infile = open(av[1],O_RDONLY);
 		if(infile == -1)
@@ -80,24 +80,25 @@ int main(int ac, char **av, char **env)
 		}
 		if(fid == 0)
 		{
-			dup2(STDIN_FILENO,infile);
-			close(pfd[0]);
+			dup2(infile,STDIN_FILENO);
+			close(infile);
+			// close(pfd[0]);
+			// printf("child\n");
 			dup2(outfile,STDOUT_FILENO);
 			close(outfile);
-			// printf("child\n");
 			execv(ft_strjoin_p(cmd2[i],cmd[0]),cmd);
 			return 0;
 		}
 		// else
 		// {
 		// 	char str[20];
-			close(pfd[1]);
+		close(pfd[1]);
 		// 	read(pfd[0],str,6);
-			close(pfd[0]);
+		close(pfd[0]);
 		// 	printf("parent\n");
 		close(outfile);
 		close(infile);
-			waitpid(0,NULL,0);
+		waitpid(0,NULL,0);
 		// }
 	}
 }

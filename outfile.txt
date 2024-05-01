@@ -1,0 +1,30 @@
+       5
+       5
+       5
+Makefile
+README.MD
+a.out
+infile
+outfile.txt
+pipex
+srcs
+test.c
+       5       6      56
+total 112
+-rw-r--r--   1 ael-maaz  candidates    956 Apr 24 22:34 Makefile
+-rw-r--r--   1 ael-maaz  candidates      8 Apr 23 19:52 README.MD
+-rwxr-xr-x   1 ael-maaz  candidates  12776 Apr 27 21:29 a.out
+-rw-r--r--   1 ael-maaz  candidates     56 Apr 25 22:19 infile
+-rw-r--r--   1 ael-maaz  candidates    114 May  1 20:58 outfile.txt
+-rwxr-xr-x   1 ael-maaz  candidates  18328 May  1 20:52 pipex
+drwxr-xr-x  15 ael-maaz  candidates    510 May  1 20:52 srcs
+-rw-r--r--   1 ael-maaz  candidates   2509 Apr 24 21:19 test.c
+total 112
+-rw-r--r--   1 ael-maaz  candidates    956 Apr 24 22:34 Makefile
+-rw-r--r--   1 ael-maaz  candidates      8 Apr 23 19:52 README.MD
+-rwxr-xr-x   1 ael-maaz  candidates  12776 Apr 27 21:29 a.out
+-rw-r--r--   1 ael-maaz  candidates     56 Apr 25 22:19 infile
+-rw-r--r--   1 ael-maaz  candidates    634 May  1 20:59 outfile.txt
+-rwxr-xr-x   1 ael-maaz  candidates  18328 May  1 20:52 pipex
+drwxr-xr-x  15 ael-maaz  candidates    510 May  1 20:52 srcs
+-rw-r--r--   1 ael-maaz  candidates   2509 Apr 24 21:19 test.c
