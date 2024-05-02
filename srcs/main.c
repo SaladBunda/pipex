@@ -6,7 +6,7 @@
 /*   By: ael-maaz <ael-maaz@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 22:01:50 by ael-maaz          #+#    #+#             */
-/*   Updated: 2024/05/02 13:26:57 by ael-maaz         ###   ########.fr       */
+/*   Updated: 2024/05/02 14:16:57 by ael-maaz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ char **second_arg(char **av, int option)
 		cmd = ft_split(av[3], ' ');
 	while(cmd[++i])
 	{
-		cmd[i] = ft_strtrim(cmd[i],"\'");
+		cmd[i] = ft_strtrim(cmd[i],"\'\"");
 		printf("cmd[i]:%s\n",cmd[i]);
 	}
 	return cmd;
@@ -98,12 +98,10 @@ char **check_args(int ac, char **av, char **env, char ***cmd2, int *i)
 	{
 		if(access(ft_strjoin_p((*cmd2)[*i],cmd[0]),X_OK) != -1)
 		{
-			// printf("valid command\n");
 			break;
 		}
 		(*i)++;
 	}
-	// printf("path is:%s\n",(*cmd2)[*i]);
 	return cmd;
 }     
 
@@ -120,13 +118,13 @@ int main(int ac, char **av, char **env)
 		int pfd[2];
 		int i = 0;
 		int j = 0;
-		int d = 0;
+		// int d = 0;
 		// printf("%d\n",outfile);
 		comd = check_args(ac,av,env,&cmd1,&i);
 		comd2 = check_args(ac,av,env,&cmd2,&j);
-		while(comd[d])
-			printf("args:%s\n",comd[d++]);
-		printf("args:%s\n",comd[d++]);
+		// while(comd[d])
+		// 	printf("args:%s\n",comd[d++]);
+		// printf("args:%s\n",comd[d++]);
 		
 		int outfile = open(av[4], O_RDWR | O_CREAT | O_APPEND, 0644);
 		if(outfile == -1)
