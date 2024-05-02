@@ -6,7 +6,7 @@
 /*   By: ael-maaz <ael-maaz@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 22:25:26 by ael-maaz          #+#    #+#             */
-/*   Updated: 2024/05/02 13:26:14 by ael-maaz         ###   ########.fr       */
+/*   Updated: 2024/05/02 18:09:42 by ael-maaz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,4 +56,20 @@ char	*ft_strrchr(const char *s, int c)
 	if (s[i] == (unsigned char)c)
 		return ((char *)s + i);
 	return (0);
+}
+
+void function1(const char *s, int *i)
+{
+	if(s[*i] && s[*i] == '\'')
+	{
+		(*i)++;
+		while(s[*i] && s[*i] != '\'')
+			(*i)++;
+		}
+		else if (s[*i] && s[*i] == '\"')
+		{
+			(*i)++;
+			while(s[*i] && s[*i] != '\"')
+				(*i)++;
+		}
 }

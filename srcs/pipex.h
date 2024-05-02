@@ -6,7 +6,7 @@
 /*   By: ael-maaz <ael-maaz@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 22:02:24 by ael-maaz          #+#    #+#             */
-/*   Updated: 2024/05/02 13:27:21 by ael-maaz         ###   ########.fr       */
+/*   Updated: 2024/05/02 18:09:56 by ael-maaz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,6 @@ char	*ft_strchr(const char *s, int c);
 char	*ft_strtrim(char const *s1, char const *set);
 char	*ft_strjoin_p(char *s1, char *s2);
 char	*ft_strrchr(const char *s, int c);
-
-
+void function1(const char *s, int *i);
 
 #endif

@@ -6,14 +6,12 @@
 /*   By: ael-maaz <ael-maaz@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 22:01:50 by ael-maaz          #+#    #+#             */
-/*   Updated: 2024/05/02 14:16:57 by ael-maaz         ###   ########.fr       */
+/*   Updated: 2024/05/02 19:59:44 by ael-maaz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 #include <stdio.h>
-
-
 
 int first_arg(char **av)
 {
@@ -38,7 +36,6 @@ char **second_arg(char **av, int option)
 	while(cmd[++i])
 	{
 		cmd[i] = ft_strtrim(cmd[i],"\'\"");
-		printf("cmd[i]:%s\n",cmd[i]);
 	}
 	return cmd;
 }
@@ -82,7 +79,6 @@ void find_path(char **env, int *i)
 
 char **check_args(int ac, char **av, char **env, char ***cmd2, int *i)
 {
-	// (void)env;
 	static int var = 1;
 	(void)ac;
 	
@@ -97,9 +93,7 @@ char **check_args(int ac, char **av, char **env, char ***cmd2, int *i)
 	while((*cmd2)[*i])
 	{
 		if(access(ft_strjoin_p((*cmd2)[*i],cmd[0]),X_OK) != -1)
-		{
 			break;
-		}
 		(*i)++;
 	}
 	return cmd;
@@ -118,13 +112,9 @@ int main(int ac, char **av, char **env)
 		int pfd[2];
 		int i = 0;
 		int j = 0;
-		// int d = 0;
-		// printf("%d\n",outfile);
+		int pid[2];
 		comd = check_args(ac,av,env,&cmd1,&i);
 		comd2 = check_args(ac,av,env,&cmd2,&j);
-		// while(comd[d])
-		// 	printf("args:%s\n",comd[d++]);
-		// printf("args:%s\n",comd[d++]);
 		
 		int outfile = open(av[4], O_RDWR | O_CREAT | O_APPEND, 0644);
 		if(outfile == -1)
@@ -163,7 +153,7 @@ int main(int ac, char **av, char **env)
 				exit(EXIT_FAILURE);	
 			}
 			close(pfd[1]);
-			return 0;
+			exit(EXIT_SUCCESS);
 		}
 		waitpid(0,NULL,0);
 
@@ -179,9 +169,8 @@ int main(int ac, char **av, char **env)
 				perror("execv2:");
 				exit(EXIT_FAILURE);
 			}
-			return 0;
+			exit(EXIT_SUCCESS);
 		}
-
 		close(pfd[1]);
 		close(pfd[0]);
 		close(outfile);
