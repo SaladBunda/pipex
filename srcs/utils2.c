@@ -6,7 +6,7 @@
 /*   By: ael-maaz <ael-maaz@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 22:25:26 by ael-maaz          #+#    #+#             */
-/*   Updated: 2024/04/24 22:37:42 by ael-maaz         ###   ########.fr       */
+/*   Updated: 2024/05/02 13:26:14 by ael-maaz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,4 +38,22 @@ char	*ft_strjoin_p(char *s1, char *s2)
 		p[i++] = s2[j++];
 	p[length + 1] = '\0';
 	return (p);
+}
+
+char	*ft_strrchr(const char *s, int c)
+{
+	size_t	i;
+
+	i = 0;
+	while (s[i] != '\0')
+		i++;
+	while (i > 0)
+	{
+		if ((unsigned char)c == s[i])
+			return ((char *)s + i);
+		i--;
+	}
+	if (s[i] == (unsigned char)c)
+		return ((char *)s + i);
+	return (0);
 }

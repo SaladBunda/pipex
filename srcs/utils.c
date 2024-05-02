@@ -6,7 +6,7 @@
 /*   By: ael-maaz <ael-maaz@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/05 18:37:11 by ael-maaz          #+#    #+#             */
-/*   Updated: 2024/04/24 22:15:43 by ael-maaz         ###   ########.fr       */
+/*   Updated: 2024/05/02 13:27:11 by ael-maaz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,8 @@ char	*ft_strtrim(char const *s1, char const *set)
 	i = 0;
 	while (s1[i] && ft_strchr(set, s1[i]) != 0)
 		i++;
+	while (j > i && ft_strrchr(set, s1[j]) != 0)
+		j--;
 	if ((int) j - i + 1 <= 0)
 		size = 0;
 	else
