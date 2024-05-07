@@ -1,0 +1,22 @@
+y
+y
+y
+y
+y
+y
+y
+y
+y
+y
+total 88
+drwxr-xr-x  11 ael-maaz  candidates    374 May  3 19:40 .
+drwxr-xr-x  10 ael-maaz  candidates    340 May  2 19:53 ..
+drwxr-xr-x  13 ael-maaz  candidates    442 May  2 20:55 .git
+-rw-r--r--   1 ael-maaz  candidates    956 Apr 24 22:34 Makefile
+-rw-r--r--   1 ael-maaz  candidates     20 May  2 18:45 bocal
+-rw-r--r--   1 ael-maaz  candidates     20 May  3 19:40 bunda
+-rw-r--r--   1 ael-maaz  candidates    780 May  2 11:41 infile
+-rw-r--r--   1 ael-maaz  candidates      0 May  2 19:57 ou
+-rw-r--r--   1 ael-maaz  candidates    100 May  3 19:37 out
+-rwxr-xr-x   1 ael-maaz  candidates  22592 May  3 19:40 pipex
+drwxr-xr-x  15 ael-maaz  candidates    510 May  3 19:40 srcs

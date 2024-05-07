@@ -6,7 +6,7 @@
 /*   By: ael-maaz <ael-maaz@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 22:01:50 by ael-maaz          #+#    #+#             */
-/*   Updated: 2024/05/02 19:59:44 by ael-maaz         ###   ########.fr       */
+/*   Updated: 2024/05/03 19:58:17 by ael-maaz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,7 @@ char **check_args(int ac, char **av, char **env, char ***cmd2, int *i)
 {
 	static int var = 1;
 	(void)ac;
+	// int flag = 0;
 	
 	char **cmd;
 	first_arg(av);
@@ -90,12 +91,17 @@ char **check_args(int ac, char **av, char **env, char ***cmd2, int *i)
 	find_path(env,&index);
 	(*cmd2) = ft_split(env[index],':');
 	(*cmd2)[0]=ft_strtrim((*cmd2)[0],"PATH=");
+	// if(access(cmd[0],X_OK) != -1)
+	// 	return cmd;
 	while((*cmd2)[*i])
 	{
 		if(access(ft_strjoin_p((*cmd2)[*i],cmd[0]),X_OK) != -1)
 			break;
+			// flag = 1;
 		(*i)++;
 	}
+	// if(flag == 0)
+	// 	exit(127);
 	return cmd;
 }     
 
@@ -112,7 +118,7 @@ int main(int ac, char **av, char **env)
 		int pfd[2];
 		int i = 0;
 		int j = 0;
-		int pid[2];
+		// int pid[2];
 		comd = check_args(ac,av,env,&cmd1,&i);
 		comd2 = check_args(ac,av,env,&cmd2,&j);
 		
@@ -145,7 +151,6 @@ int main(int ac, char **av, char **env)
 			dup2(infile,STDIN_FILENO);
 			close(infile);
 			close(pfd[0]);
-			// printf("child\n");
 			dup2(pfd[1],STDOUT_FILENO);
 			if(execv(ft_strjoin_p(cmd1[i],comd[0]),comd) == -1)
 			{
@@ -155,11 +160,12 @@ int main(int ac, char **av, char **env)
 			close(pfd[1]);
 			exit(EXIT_SUCCESS);
 		}
-		waitpid(0,NULL,0);
+		// waitpid(0,NULL,0);
 
 		fid2 = fork();
 		if(fid2 == 0)
 		{
+			close(infile);
 			close(pfd[1]);
 			dup2(pfd[0],STDIN_FILENO);
 			close(pfd[0]);
@@ -175,7 +181,8 @@ int main(int ac, char **av, char **env)
 		close(pfd[0]);
 		close(outfile);
 		close(infile);
-		waitpid(0,NULL,0);
+		while(wait(NULL) > 0);
+		// waitpid(0,NULL,0);
 		exit(EXIT_SUCCESS);
 	}
 	exit(EXIT_FAILURE);
