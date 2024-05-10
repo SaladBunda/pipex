@@ -27,16 +27,6 @@ static int	word_c(char *str, char c)
 		while (str[i] != c && str[i])
 		{
 			function1(str,&i);
-			// if(str[i] == '\'')
-			// {
-			// 	while(str[++i] != '\'')
-			// 		continue ;
-			// }	
-			// else if(str[i] == '\"')
-			// {
-			// 	while(str[++i] != '\"')
-			// 		continue ;
-			// }	
 			i++;
 		}
 		while (str[i] == c && str[i])
