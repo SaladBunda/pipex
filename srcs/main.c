@@ -6,7 +6,7 @@
 /*   By: ael-maaz <ael-maaz@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 22:01:50 by ael-maaz          #+#    #+#             */
-/*   Updated: 2024/05/03 19:58:17 by ael-maaz         ###   ########.fr       */
+/*   Updated: 2024/05/14 00:15:20 by ael-maaz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -152,7 +152,7 @@ int main(int ac, char **av, char **env)
 			close(infile);
 			close(pfd[0]);
 			dup2(pfd[1],STDOUT_FILENO);
-			if(execv(ft_strjoin_p(cmd1[i],comd[0]),comd) == -1)
+			if(execve(ft_strjoin_p(cmd1[i],comd[0]),comd,env) == -1)
 			{
 				perror("execv:");
 				exit(EXIT_FAILURE);	
@@ -160,7 +160,6 @@ int main(int ac, char **av, char **env)
 			close(pfd[1]);
 			exit(EXIT_SUCCESS);
 		}
-		// waitpid(0,NULL,0);
 
 		fid2 = fork();
 		if(fid2 == 0)
@@ -170,7 +169,7 @@ int main(int ac, char **av, char **env)
 			dup2(pfd[0],STDIN_FILENO);
 			close(pfd[0]);
 			dup2(outfile,STDOUT_FILENO);
-			if(execv(ft_strjoin_p(cmd2[j],comd2[0]),comd2) == -1)
+			if(execve(ft_strjoin_p(cmd2[j],comd2[0]),comd2,env) == -1)
 			{
 				perror("execv2:");
 				exit(EXIT_FAILURE);

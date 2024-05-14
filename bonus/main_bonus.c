@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   main_bonus.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ael-maaz <ael-maaz@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 22:01:50 by ael-maaz          #+#    #+#             */
-/*   Updated: 2024/05/03 19:58:17 by ael-maaz         ###   ########.fr       */
+/*   Updated: 2024/05/14 00:31:31 by ael-maaz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -217,38 +217,42 @@ int main(int ac, char **av, char **env)
 			{
 				if (count != 0)
 				{
-					dup2(pipe_id[count - 1][0], STDIN_FILENO);
+					dup2(pipe_id[count - 1][0], STDIN_FILENO);	
 					close(pipe_id[count - 1][0]);
+					close(pipe_id[count - 1][1]);
 				}
 				if (count != ac - 4)
 				{
 					dup2(pipe_id[count][1], STDOUT_FILENO);
 					close(pipe_id[count][1]);
+					close(pipe_id[count][0]);
 				}
 				else
 				{
 					dup2(pipx[count].outfile, STDOUT_FILENO);
 					close(pipx[count].outfile);
+					close(pipe_id[count][0]);
 				}
 				close(pipx[count].infile); // Close input file descriptor in child process
-				close(pipe_id[count][0]);  // Close read end of the pipe
-				if (execv(ft_strjoin_p(pipx[count].command[pipx[count].position], pipx[count].param[0]), pipx[count].param) == -1)
+				close(pipe_id[count][0]);  // Close
+				if (execve(ft_strjoin_p(pipx[count].command[pipx[count].position], pipx[count].param[0]), pipx[count].param,env) == -1)
 				{
 					perror("execv:");
 					exit(EXIT_FAILURE);
 				}
+				dprintf(2,"bunda");
 				exit(EXIT_SUCCESS);
 			}
-			// close(pipe_id[count][0]);
-			close(pipe_id[count][0]);
-			close(pipe_id[count][1]); // Close write end of the pipe in parent process
+			close(pipe_id[count - 1][0]);
+			close(pipe_id[count][1]);
+			close(pipx[count].outfile);// Close write end of the pipe in parent process
 			count++;
 		}
-			for (int i = 0; i < ac - 3; i++)
-        {
-            while (wait(NULL) > 0)
-                ;
-        }
+			// for (int i = 0; i < ac - 3; i++)
+        	// {
+        while (wait(NULL) > 0);
+                	
+        // 	}
 		exit(EXIT_SUCCESS);
 	}
 	exit(EXIT_FAILURE);
