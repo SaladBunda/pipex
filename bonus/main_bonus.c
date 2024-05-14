@@ -6,7 +6,7 @@
 /*   By: ael-maaz <ael-maaz@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 22:01:50 by ael-maaz          #+#    #+#             */
-/*   Updated: 2024/05/14 00:31:31 by ael-maaz         ###   ########.fr       */
+/*   Updated: 2024/05/14 18:52:21 by ael-maaz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,78 +108,6 @@ void init_pipx(t_pipx *pipx,int ac)
 	}
 }
 
-// int main(int ac, char **av, char **env)
-// {
-// 	if (ac > 3)
-// 	{
-// 		t_pipx pipx[ac - 3];
-// 		int count = 0;
-// 		int fork_id[ac - 3];
-// 		int pipe_id[ac - 4][2];
-// 		init_pipx(pipx,ac);
-// 		while(count < ac - 3)
-// 		{
-// 			pipx[count].param = check_args(count,av,env,&pipx[count]);
-// 			pipx[count].outfile = open(av[ac - 1], O_RDWR | O_CREAT | O_APPEND, 0644);
-// 			if(pipx[count].outfile == -1)
-// 			{
-// 				perror("outfile");
-// 				exit(EXIT_FAILURE);
-// 			}
-// 			pipx[count].infile = open(av[1],O_RDONLY);
-// 			if(pipx[count].infile == -1)
-// 			{
-// 				perror("infile");
-// 				exit(EXIT_FAILURE);
-				
-// 			}
-// 			if(pipe(pipe_id[count]) == -1)
-// 				return (perror("pipe\n"),1);
-// 			// printf("pfd[0]:%d    pfd[1]:%d\n",pfd[0],pfd[1]);
-// 			fork_id[count] = fork();
-// 			if(fork_id[count]== -1)
-// 			{
-// 				perror("Fork:");
-// 				exit(EXIT_FAILURE);
-// 			}
-// 			if(fork_id[count] == 0)
-// 			{
-// 				if (count != 0) 
-// 				{ // Not the first command
-// 				// Redirect stdin to the read end of the pipe from the previous command
-// 					dup2(pipe_id[count - 1][0], STDIN_FILENO);
-// 					close(pipe_id[count - 1][0]);
-// 				}
-
-// 				if (count != ac - 4) { // Not the last command
-// 					// Redirect stdout to the write end of the current pipe
-// 					dup2(pipe_id[count][1], STDOUT_FILENO);
-// 					close(pipe_id[count][1]);
-// 				} else {
-// 					// Redirect stdout to the output file
-// 					dup2(pipx[count].outfile, STDOUT_FILENO);
-// 					close(pipx[count].outfile);
-// 				}
-// 				dprintf(2,"path:%s\n",pipx[count].command[pipx[count].position]);
-// 				dprintf(2,"command:%s\n",pipx[count].param[0]);
-// 				for(int j = 0;pipx[count].param[j];j++)
-// 					dprintf(2,"param[%d]:%s\n",j,pipx[count].param[j]);
-// 				if(execv(ft_strjoin_p(pipx[count].command[pipx[count].position],pipx[count].param[0]),pipx[count].param) == -1)
-// 				{
-// 					perror("execv:");
-// 					exit(EXIT_FAILURE);	
-// 				}
-// 				exit(EXIT_SUCCESS);
-// 			}
-// 			close(pipe_id[count][1]);
-// 			close(pipe_id[count][0]);
-// 			while(wait(NULL) > 0);
-// 			count++;
-// 		}
-// 		exit(EXIT_SUCCESS);
-// 	}
-// 	exit(EXIT_FAILURE);
-// }
 
 int main(int ac, char **av, char **env)
 {
@@ -233,8 +161,8 @@ int main(int ac, char **av, char **env)
 					close(pipx[count].outfile);
 					close(pipe_id[count][0]);
 				}
-				close(pipx[count].infile); // Close input file descriptor in child process
-				close(pipe_id[count][0]);  // Close
+				close(pipx[count].infile); 
+				close(pipe_id[count][0]);  
 				if (execve(ft_strjoin_p(pipx[count].command[pipx[count].position], pipx[count].param[0]), pipx[count].param,env) == -1)
 				{
 					perror("execv:");
@@ -245,14 +173,10 @@ int main(int ac, char **av, char **env)
 			}
 			close(pipe_id[count - 1][0]);
 			close(pipe_id[count][1]);
-			close(pipx[count].outfile);// Close write end of the pipe in parent process
+			close(pipx[count].outfile);
 			count++;
 		}
-			// for (int i = 0; i < ac - 3; i++)
-        	// {
         while (wait(NULL) > 0);
-                	
-        // 	}
 		exit(EXIT_SUCCESS);
 	}
 	exit(EXIT_FAILURE);

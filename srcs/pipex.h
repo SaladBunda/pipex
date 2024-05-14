@@ -6,7 +6,7 @@
 /*   By: ael-maaz <ael-maaz@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 22:02:24 by ael-maaz          #+#    #+#             */
-/*   Updated: 2024/05/02 18:09:56 by ael-maaz         ###   ########.fr       */
+/*   Updated: 2024/05/14 19:12:12 by ael-maaz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,16 @@
 # include <sys/wait.h>
 # include <sys/types.h>
 # include <sys/stat.h>
+
+typedef struct s_pipx
+{
+	char **command;
+	char **param;
+	int pos;
+    int infile;
+    int outfile;
+
+} t_pipx;
 
 /*get next line functions*/
 char	*get_next_line(int fd);

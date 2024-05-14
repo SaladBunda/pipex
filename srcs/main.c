@@ -6,33 +6,38 @@
 /*   By: ael-maaz <ael-maaz@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 22:01:50 by ael-maaz          #+#    #+#             */
-/*   Updated: 2024/05/14 00:15:20 by ael-maaz         ###   ########.fr       */
+/*   Updated: 2024/05/14 19:45:18 by ael-maaz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 #include <stdio.h>
 
-int first_arg(char **av)
+void first_arg(char **av,t_pipx *pipx, int count)
 {
-	int fd;
-
-	fd = open(av[1], O_RDONLY);
-	if (fd == -1)
+	if(count == 0)
 	{
-		perror("Infile");
-		exit(EXIT_FAILURE);
+		pipx->infile = open(av[1], O_RDONLY);
+		if (pipx->infile == -1)
+		{
+			perror("Infile");
+			exit(EXIT_FAILURE);
+		}
+		pipx->outfile = open(av[4], O_RDWR | O_CREAT | O_TRUNC, 0644);
+		if(pipx->outfile == -1)
+		{
+			perror("outfile:");
+			exit(EXIT_FAILURE);
+		}
 	}
-	return fd;
+	return ;
 }
 char **second_arg(char **av, int option)
 {
 	char **cmd;
 	int i = -1;
-	if(option == 1)
-		cmd = ft_split(av[2], ' ');
-	else
-		cmd = ft_split(av[3], ' ');
+	cmd = ft_split(av[option], ' ');
+
 	while(cmd[++i])
 	{
 		cmd[i] = ft_strtrim(cmd[i],"\'\"");
@@ -77,82 +82,87 @@ void find_path(char **env, int *i)
 	}
 }
 
-char **check_args(int ac, char **av, char **env, char ***cmd2, int *i)
+char **check_args(int count, char **av, char **env, t_pipx *pipx)
 {
-	static int var = 1;
-	(void)ac;
 	// int flag = 0;
-	
 	char **cmd;
-	first_arg(av);
-	cmd = second_arg(av,var);
-	var++;
 	int index = 0;
+	
+	first_arg(av,pipx,count);
+	cmd = second_arg(av,count + 2);
 	find_path(env,&index);
-	(*cmd2) = ft_split(env[index],':');
-	(*cmd2)[0]=ft_strtrim((*cmd2)[0],"PATH=");
+	pipx->command = ft_split(env[index],':');
+	pipx->command[0]=ft_strtrim(pipx->command[0],"PATH=");
 	// if(access(cmd[0],X_OK) != -1)
 	// 	return cmd;
-	while((*cmd2)[*i])
+	while(pipx->command[pipx->pos])
 	{
-		if(access(ft_strjoin_p((*cmd2)[*i],cmd[0]),X_OK) != -1)
+		if(access(ft_strjoin_p(pipx->command[pipx->pos],cmd[0]),X_OK) != -1)
 			break;
 			// flag = 1;
-		(*i)++;
+		pipx->pos++;
 	}
-	// if(flag == 0)
-	// 	exit(127);
+	if(pipx->command[pipx->pos] == NULL)
+		exit(127);
 	return cmd;
-}     
+}
+
+void init_pipx(t_pipx *pipx,t_pipx *pipx2)
+{
+		pipx->command = NULL;
+		pipx->param = NULL;
+		pipx->pos = 0;
+		pipx2->command = NULL;
+		pipx2->param = NULL;
+		pipx2->pos = 0;
+}
 
 int main(int ac, char **av, char **env)
 {
 	if (ac == 5)
 	{
-		char **comd;
-		char **comd2;
-		char **cmd1 = NULL;
-		char **cmd2 = NULL;
-		int fid;
-		int fid2;
+		t_pipx pipx1;
+		t_pipx pipx2;
+		init_pipx(&pipx1,&pipx2);
+		// char **comd;
+		// char **comd2;
+		// char **cmd1 = NULL;
+		// char **cmd2 = NULL;
+		int fid[2];
 		int pfd[2];
-		int i = 0;
-		int j = 0;
+		// int i = 0;
+		// int j = 0;
 		// int pid[2];
-		comd = check_args(ac,av,env,&cmd1,&i);
-		comd2 = check_args(ac,av,env,&cmd2,&j);
-		
-		int outfile = open(av[4], O_RDWR | O_CREAT | O_APPEND, 0644);
-		if(outfile == -1)
-		{
-			perror("infile:");
-			exit(EXIT_FAILURE);
-		}
-		// printf("main path:%s\n",ft_strjoin_p(cmd1[i],comd[0]));
-		int infile;
-		infile = open(av[1],O_RDONLY);
-		if(infile == -1)
-		{
-			perror("infile:");
-			exit(EXIT_FAILURE);
+		pipx1.param = check_args(0,av,env,&pipx1);
+		pipx2.param = check_args(1,av,env,&pipx2);
+		// pipx1.outfile = open(av[4], O_RDWR | O_CREAT | O_APPEND, 0644);
+		// if(pipx1.outfile == -1)
+		// {
+		// 	perror("infile:");
+		// 	exit(EXIT_FAILURE);
+		// }
+		// pipx1.infile = open(av[1],O_RDONLY);
+		// if(pipx1.infile == -1)
+		// {
+		// 	perror("infile:");
+		// 	exit(EXIT_FAILURE);
 			
-		}
+		// }
 		if(pipe(pfd) == -1)
 			return (perror("pipe\n"),1);
-		// printf("pfd[0]:%d    pfd[1]:%d\n",pfd[0],pfd[1]);
-		fid = fork();
-		if(fid == -1)
+		fid[0] = fork();
+		if(fid[0] == -1)
 		{
 			perror("Fork:");
 			exit(EXIT_FAILURE);
 		}
-		if(fid == 0)
+		if(fid[0] == 0)
 		{
-			dup2(infile,STDIN_FILENO);
-			close(infile);
+			dup2(pipx1.infile,STDIN_FILENO);
+			close(pipx1.infile);
 			close(pfd[0]);
 			dup2(pfd[1],STDOUT_FILENO);
-			if(execve(ft_strjoin_p(cmd1[i],comd[0]),comd,env) == -1)
+			if(execve(ft_strjoin_p(pipx1.command[pipx1.pos],pipx1.param[0]),pipx1.param,env) == -1)
 			{
 				perror("execv:");
 				exit(EXIT_FAILURE);	
@@ -161,15 +171,20 @@ int main(int ac, char **av, char **env)
 			exit(EXIT_SUCCESS);
 		}
 
-		fid2 = fork();
-		if(fid2 == 0)
+		fid[1] = fork();
+		if(fid[1] == -1)
 		{
-			close(infile);
+			perror("Fork2:");
+			exit(EXIT_FAILURE);
+		}
+		if(fid[1] == 0)
+		{
+			close(pipx1.infile);
 			close(pfd[1]);
 			dup2(pfd[0],STDIN_FILENO);
 			close(pfd[0]);
-			dup2(outfile,STDOUT_FILENO);
-			if(execve(ft_strjoin_p(cmd2[j],comd2[0]),comd2,env) == -1)
+			dup2(pipx1.outfile,STDOUT_FILENO);
+			if(execve(ft_strjoin_p(pipx2.command[pipx2.pos],pipx2.param[0]),pipx2.param,env) == -1)
 			{
 				perror("execv2:");
 				exit(EXIT_FAILURE);
@@ -178,10 +193,9 @@ int main(int ac, char **av, char **env)
 		}
 		close(pfd[1]);
 		close(pfd[0]);
-		close(outfile);
-		close(infile);
+		close(pipx1.outfile);
+		close(pipx1.infile);
 		while(wait(NULL) > 0);
-		// waitpid(0,NULL,0);
 		exit(EXIT_SUCCESS);
 	}
 	exit(EXIT_FAILURE);
