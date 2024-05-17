@@ -6,12 +6,12 @@
 /*   By: ael-maaz <ael-maaz@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 22:02:24 by ael-maaz          #+#    #+#             */
-/*   Updated: 2024/05/15 19:17:03 by ael-maaz         ###   ########.fr       */
+/*   Updated: 2024/05/17 07:13:18 by ael-maaz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PIPEX_H
-# define PIPEX_H
+#ifndef PIPEX_BONUS_H
+# define PIPEX_BONUS_H
 
 # include <stdio.h>
 # include <stdlib.h>
@@ -21,16 +21,16 @@
 # include <sys/types.h>
 # include <sys/stat.h>
 
-                  
 typedef struct s_pipx
 {
-	char **command;
-	char **param;
-	int position;
-    int infile;
-    int outfile;
+	char	**cmd;
+	char	**pm;
+	int		pos;
+	int		infile;
+	int		outfile;
+	int		info;
 
-} t_pipx;
+}	t_pipx;
 
 /*get next line functions*/
 char	*get_next_line(int fd);
@@ -47,6 +47,6 @@ char	*ft_strchr(const char *s, int c);
 char	*ft_strtrim(char const *s1, char const *set);
 char	*ft_strjoin_p(char *s1, char *s2);
 char	*ft_strrchr(const char *s, int c);
-void function1(const char *s, int *i);
+void	function1(const char *s, int *i);
 
 #endif

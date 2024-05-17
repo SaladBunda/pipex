@@ -6,35 +6,39 @@
 /*   By: ael-maaz <ael-maaz@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 22:01:50 by ael-maaz          #+#    #+#             */
-/*   Updated: 2024/05/15 20:37:48 by ael-maaz         ###   ########.fr       */
+/*   Updated: 2024/05/17 09:25:59 by ael-maaz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex_bonus.h"
 #include <stdio.h>
 
-int first_arg(char **av)
+void	file_io(char **av, t_pipx *pipx)
 {
-	int fd;
-
-	fd = open(av[1], O_RDONLY);
-	if (fd == -1)
+	pipx->infile = open(av[1], O_RDONLY);
+	if (pipx->infile == -1)
 	{
 		perror("Infile");
 		exit(EXIT_FAILURE);
 	}
-	return fd;
-}
-char **second_arg(char **av, int option)
-{
-	char **cmd;
-	int i = -1;
-	cmd = ft_split(av[option], ' ');
-	while(cmd[++i])
+	pipx->outfile = open(av[pipx->info], O_RDWR | O_CREAT | O_TRUNC, 0644);
+	if (pipx->outfile == -1)
 	{
-		cmd[i] = ft_strtrim(cmd[i],"\'\"");
+		perror("outfile:");
+		exit(EXIT_FAILURE);
 	}
-	return cmd;
+}
+
+char	**second_arg(char **av, int option)
+{
+	char	**cmd;
+	int		i;
+
+	i = -1;
+	cmd = ft_split(av[option], ' ');
+	while (cmd[++i])
+		cmd[i] = ft_strtrim(cmd[i], "\'\"");
+	return (cmd);
 }
 
 char	*ft_strnstr(const char *haystack, const char *needle, int len)
@@ -76,24 +80,23 @@ void find_path(char **env, int *i)
 
 char **check_args(int current, char **av, char **env, t_pipx *pipx)
 {
-	// int flag = 0;
-	
+
 	char **cmd;
-	first_arg(av);
+	file_io(av,pipx);
 	cmd = second_arg(av,current + 2);
 	int index = 0;
 	find_path(env,&index);
-	pipx->command= ft_split(env[index],':');
-	pipx->command[0]=ft_strtrim(pipx->command[0],"PATH=");
+	pipx->cmd= ft_split(env[index],':');
+	pipx->cmd[0]=ft_strtrim(pipx->cmd[0],"PATH=");
 	if(access(cmd[0],X_OK) != -1)
-		return (pipx->command[0] = NULL,cmd);
-	while(pipx->command[pipx->position])
+		return (pipx->cmd[0] = NULL,cmd);
+	while(pipx->cmd[pipx->pos])
 	{
-		if(access(ft_strjoin_p(pipx->command[pipx->position],cmd[0]),X_OK) != -1)
+		if(access(ft_strjoin_p(pipx->cmd[pipx->pos],cmd[0]),X_OK) != -1)
 			break;
-		pipx->position++;
+		pipx->pos++;
 	}
-	if(pipx->command[pipx->position] == NULL)
+	if(pipx->cmd[pipx->pos] == NULL)
 		exit(127);
 	return cmd;
 }     
@@ -104,38 +107,51 @@ void init_pipx(t_pipx *pipx,int ac)
 	int i = 0;
 	while(i < ac - 3)
 	{
-		pipx[i].command = NULL;
-		pipx[i].param = NULL;
-		pipx[i].position = 0;
+		pipx[i].cmd = NULL;
+		pipx[i].pm = NULL;
+		pipx[i].pos = 0;
+		pipx[i].info = ac - 1;  
 		i++;
 	}
 }
 
+void init_variables(t_pipx **pipx,int **fork_id, int ***pipe_id, int ac)
+{
+	int	i;
+
+	i = 0;
+	*pipx = malloc((ac - 3) * sizeof(t_pipx));
+	if (!(*pipx))
+		exit(EXIT_FAILURE);
+	*fork_id = malloc((ac - 3) * sizeof(int));
+	if (!(*fork_id))
+		exit(EXIT_FAILURE);
+	*pipe_id = malloc((ac - 4) * sizeof(int *));
+	if (!(*pipe_id))
+		exit(EXIT_FAILURE);
+	while (i < ac - 4)
+	{
+		(*pipe_id)[i] = malloc(2 * sizeof(int));
+        if (!(*pipe_id)[i])
+            exit(EXIT_FAILURE);
+		i++;
+	}
+}
 
 int main(int ac, char **av, char **env)
 {
+	t_pipx	pipx[ac - 3];
+	int		count;
+	int		fork_id[ac - 3];
+	int		pipe_id[ac-4][2];
 	if (ac > 3)
 	{
-		t_pipx pipx[ac - 3];
-		int count = 0;
-		int fork_id[ac - 3];
-		int pipe_id[ac - 4][2];
+		count = 0;
+		// init_variables(&pipx, &fork_id, &pipe_id, ac);
 		init_pipx(pipx, ac);
 		while (count < ac - 3)
 		{
-			pipx[count].param = check_args(count, av, env, &pipx[count]);
-			pipx[count].outfile = open(av[ac - 1], O_RDWR | O_CREAT | O_TRUNC, 0644);
-			if (pipx[count].outfile == -1)
-			{
-				perror("outfile");
-				exit(EXIT_FAILURE);
-			}
-			pipx[count].infile = open(av[1], O_RDONLY);
-			if (pipx[count].infile == -1)
-			{
-				perror("infile");
-				exit(EXIT_FAILURE);
-			}
+			pipx[count].pm = check_args(count, av, env, &pipx[count]);
 			if (pipe(pipe_id[count]) == -1)
 				return (perror("pipe\n"), 1);
 			fork_id[count] = fork();
@@ -148,7 +164,7 @@ int main(int ac, char **av, char **env)
 			{
 				if (count != 0)
 				{
-					dup2(pipe_id[count - 1][0], STDIN_FILENO);	
+					dup2(pipe_id[count - 1][0], STDIN_FILENO);
 					close(pipe_id[count - 1][0]);
 					close(pipe_id[count - 1][1]);
 				}
@@ -165,20 +181,22 @@ int main(int ac, char **av, char **env)
 					close(pipe_id[count][0]);
 				}
 				close(pipx[count].infile); 
-				close(pipe_id[count][0]);  
-				if (execve(ft_strjoin_p(pipx[count].command[pipx[count].position], pipx[count].param[0]), pipx[count].param,env) == -1)
+				close(pipe_id[count][0]);
+				if (execve(ft_strjoin_p(pipx[count].cmd[pipx[count].pos], pipx[count].pm[0]), pipx[count].pm,env) == -1)
 				{
 					perror("execv:");
 					exit(EXIT_FAILURE);
 				}
-				dprintf(2,"bunda");
 				exit(EXIT_SUCCESS);
 			}
+
 			close(pipe_id[count - 1][0]);
+	
 			close(pipe_id[count][1]);
 			close(pipx[count].outfile);
 			count++;
 		}
+		// close(pipe_id[count - 1][0]);
         while (wait(NULL) > 0);
 		exit(EXIT_SUCCESS);
 	}

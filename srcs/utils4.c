@@ -6,7 +6,7 @@
 /*   By: ael-maaz <ael-maaz@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/12 15:33:39 by ael-maaz          #+#    #+#             */
-/*   Updated: 2024/05/17 06:33:50 by ael-maaz         ###   ########.fr       */
+/*   Updated: 2024/05/17 07:48:48 by ael-maaz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,4 +44,22 @@ char	*ft_strdup(const char *s1)
 	}
 	p[i] = '\0';
 	return (p);
+}
+
+void freeing(t_pipx *pipx1, t_pipx *pipx2)
+{
+	int i;
+
+	i = -1;
+	while (pipx1->cmd[++i])
+		free(pipx1->cmd[i]);
+	i = -1;
+	while (pipx2->cmd[++i])
+		free(pipx2->cmd[i]);
+	i = -1;
+	while (pipx1->prm[++i])
+		free(pipx1->prm[i]);
+	i = -1;
+	while (pipx2->prm[++i])
+		free(pipx2->prm[i]);
 }

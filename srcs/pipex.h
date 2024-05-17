@@ -6,7 +6,7 @@
 /*   By: ael-maaz <ael-maaz@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 22:02:24 by ael-maaz          #+#    #+#             */
-/*   Updated: 2024/05/17 06:33:23 by ael-maaz         ###   ########.fr       */
+/*   Updated: 2024/05/17 07:48:57 by ael-maaz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ void	*ft_memcpy(void *dst, const void *src, size_t n);
 char	**ft_split(char const *s, char c);
 /* extra functions */
 char	*ft_strchr(const char *s, int c);
-char	*ft_strtrim(char const *s1, char const *set);
+char	*ft_strtrim(char *s1, char const *set);
 char	*fjoin(char *s1, char *s2);
 char	*ft_strrchr(const char *s, int c);
 void	function1(const char *s, int *i);
@@ -48,5 +48,6 @@ void	init_pipx(t_pipx *pipx, t_pipx *pipx2);
 void	find_path(char **env, int *i);
 char	**second_arg(char **av, int option);
 void	close_fds(int n1, int n2, int n3, int n4);
+void freeing(t_pipx *pipx1, t_pipx *pipx2);
 
 #endif

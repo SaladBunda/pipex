@@ -6,17 +6,23 @@
 /*   By: ael-maaz <ael-maaz@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 22:01:50 by ael-maaz          #+#    #+#             */
-/*   Updated: 2024/05/17 06:26:10 by ael-maaz         ###   ########.fr       */
+/*   Updated: 2024/05/17 07:49:00 by ael-maaz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 #include <stdio.h>
 
+void leaking(void)
+{
+	system("leaks pipex");
+}
+
 char	**check_args(int count, char **av, char **env, t_pipx *pipx)
 {
 	char	**cmd;
 	int		index;
+	char	*str;
 
 	index = 0;
 	file_io(av, pipx, count);
@@ -28,12 +34,15 @@ char	**check_args(int count, char **av, char **env, t_pipx *pipx)
 		return (pipx->cmd[0] = NULL, cmd);
 	while (pipx->cmd[pipx->pos])
 	{
-		if (access(fjoin(pipx->cmd[pipx->pos], cmd[0]), X_OK) != -1)
+		str = fjoin(pipx->cmd[pipx->pos], cmd[0]);
+		if (access(str, X_OK) != -1)
 			break ;
 		pipx->pos++;
+		free(str);
 	}
 	if (pipx->cmd[pipx->pos] == NULL)
 		exit(127);
+	free(str);
 	return (cmd);
 }
 
@@ -94,6 +103,7 @@ void	pipex(t_pipx pipx1, t_pipx pipx2, int pfd[2], char **env)
 
 int	main(int ac, char **av, char **env)
 {
+	atexit(leaking);
 	t_pipx	pipx1;
 	t_pipx	pipx2;
 	int		pfd[2];
@@ -106,6 +116,7 @@ int	main(int ac, char **av, char **env)
 		pipex(pipx1, pipx2, pfd, env);
 		while (wait(NULL) > 0)
 			;
+		freeing(&pipx1,&pipx2);
 		exit(EXIT_SUCCESS);
 	}
 	exit(EXIT_FAILURE);
