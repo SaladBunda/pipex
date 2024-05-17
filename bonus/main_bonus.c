@@ -6,7 +6,7 @@
 /*   By: ael-maaz <ael-maaz@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 22:01:50 by ael-maaz          #+#    #+#             */
-/*   Updated: 2024/05/14 18:52:21 by ael-maaz         ###   ########.fr       */
+/*   Updated: 2024/05/15 20:37:48 by ael-maaz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,13 +85,16 @@ char **check_args(int current, char **av, char **env, t_pipx *pipx)
 	find_path(env,&index);
 	pipx->command= ft_split(env[index],':');
 	pipx->command[0]=ft_strtrim(pipx->command[0],"PATH=");
+	if(access(cmd[0],X_OK) != -1)
+		return (pipx->command[0] = NULL,cmd);
 	while(pipx->command[pipx->position])
 	{
 		if(access(ft_strjoin_p(pipx->command[pipx->position],cmd[0]),X_OK) != -1)
 			break;
 		pipx->position++;
 	}
-
+	if(pipx->command[pipx->position] == NULL)
+		exit(127);
 	return cmd;
 }     
 

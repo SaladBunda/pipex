@@ -6,7 +6,7 @@
 /*   By: ael-maaz <ael-maaz@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/05 18:37:11 by ael-maaz          #+#    #+#             */
-/*   Updated: 2024/05/02 13:27:11 by ael-maaz         ###   ########.fr       */
+/*   Updated: 2024/05/17 06:19:25 by ael-maaz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,6 @@ char	*ft_strchr(const char *s, int c)
 		return ((char *)s + i);
 	return (0);
 }
-
 
 size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize)
 {
@@ -88,5 +87,33 @@ char	*ft_strtrim(char const *s1, char const *set)
 	if (!p)
 		return (NULL);
 	ft_strlcpy(p, &s1[i], size + 1);
+	return (p);
+}
+
+char	*fjoin(char *s1, char *s2)
+{
+	size_t	length;
+	char	*p;
+	int		i;
+	int		j;
+
+	i = -1;
+	j = 0;
+	if (s1 == NULL && s2 == NULL)
+		return (NULL);
+	else if (s1 == NULL)
+		return (ft_strdup(s2));
+	else if (s2 == NULL)
+		return (ft_strdup(s1));
+	length = ft_strlen(s1) + ft_strlen(s2);
+	p = (char *)malloc(sizeof(char) * (length + 2));
+	if (!p)
+		return (NULL);
+	while (s1[++i])
+		p[i] = s1[i];
+	p[i++] = '/';
+	while (s2[j])
+		p[i++] = s2[j++];
+	p[length + 1] = '\0';
 	return (p);
 }

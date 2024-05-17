@@ -6,39 +6,11 @@
 /*   By: ael-maaz <ael-maaz@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 22:25:26 by ael-maaz          #+#    #+#             */
-/*   Updated: 2024/05/02 18:09:42 by ael-maaz         ###   ########.fr       */
+/*   Updated: 2024/05/17 06:23:26 by ael-maaz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
-
-char	*ft_strjoin_p(char *s1, char *s2)
-{
-	size_t	length;
-	char	*p;
-	int		i;
-	int		j;
-
-	i = -1;
-	j = 0;
-	if (s1 == NULL && s2 == NULL)
-		return (NULL);
-	else if (s1 == NULL)
-		return (ft_strdup(s2));
-	else if (s2 == NULL)
-		return (ft_strdup(s1));
-	length = ft_strlen(s1) + ft_strlen(s2);
-	p = (char *)malloc(sizeof(char) * (length + 2));
-	if (!p)
-		return (NULL);
-	while (s1[++i])
-		p[i] = s1[i];
-	p[i++] = '/';
-	while (s2[j])
-		p[i++] = s2[j++];
-	p[length + 1] = '\0';
-	return (p);
-}
 
 char	*ft_strrchr(const char *s, int c)
 {
@@ -58,18 +30,72 @@ char	*ft_strrchr(const char *s, int c)
 	return (0);
 }
 
-void function1(const char *s, int *i)
+void	function1(const char *s, int *i)
 {
-	if(s[*i] && s[*i] == '\'')
+	if (s[*i] && s[*i] == '\'')
 	{
 		(*i)++;
-		while(s[*i] && s[*i] != '\'')
+		while (s[*i] && s[*i] != '\'')
 			(*i)++;
-		}
-		else if (s[*i] && s[*i] == '\"')
+	}
+	else if (s[*i] && s[*i] == '\"')
+	{
+		(*i)++;
+		while (s[*i] && s[*i] != '\"')
+			(*i)++;
+	}
+}
+
+char	*ft_strnstr(const char *haystack, const char *needle, int len)
+{
+	int	i;
+	int	j;
+	int	count;
+
+	i = 0;
+	count = ft_strlen(needle);
+	if (!haystack && len == 0 && needle)
+		return (NULL);
+	if (needle[0] == '\0')
+		return ((char *)haystack);
+	while (haystack[i] && i < len)
+	{
+		j = 0;
+		while (needle[j] == haystack[i + j] && i + j < len)
 		{
-			(*i)++;
-			while(s[*i] && s[*i] != '\"')
-				(*i)++;
+			if (j == count - 1 && needle[j] == haystack[i + j]
+				&& haystack[i + j] != '\0')
+				return ((char *)haystack + i);
+			j++;
 		}
+		i++;
+	}
+	return (NULL);
+}
+
+void	file_io(char **av, t_pipx *pipx, int count)
+{
+	if (count == 0)
+	{
+		pipx->infile = open(av[1], O_RDONLY);
+		if (pipx->infile == -1)
+		{
+			perror("Infile");
+			exit(EXIT_FAILURE);
+		}
+		pipx->outfile = open(av[4], O_RDWR | O_CREAT | O_TRUNC, 0644);
+		if (pipx->outfile == -1)
+		{
+			perror("outfile:");
+			exit(EXIT_FAILURE);
+		}
+	}
+}
+
+void	close_fds(int n1, int n2, int n3, int n4)
+{
+	close(n1);
+	close(n2);
+	close(n3);
+	close(n4);
 }

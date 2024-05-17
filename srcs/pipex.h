@@ -6,7 +6,7 @@
 /*   By: ael-maaz <ael-maaz@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 22:02:24 by ael-maaz          #+#    #+#             */
-/*   Updated: 2024/05/14 19:12:12 by ael-maaz         ###   ########.fr       */
+/*   Updated: 2024/05/17 06:33:23 by ael-maaz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,29 +23,30 @@
 
 typedef struct s_pipx
 {
-	char **command;
-	char **param;
-	int pos;
-    int infile;
-    int outfile;
+	char	**cmd;
+	char	**prm;
+	int		pos;
+	int		infile;
+	int		outfile;
 
-} t_pipx;
+}	t_pipx;
 
-/*get next line functions*/
-char	*get_next_line(int fd);
-int		ft_strchr_g(const char *s, int c);
-char	*ft_strjoin(char *s1, char *s2);
 char	*ft_strdup(const char *s1);
 int		ft_strlen(const char *s);
-void	*ft_memfunc(void *b, void *s, int c, size_t len);
 /*ft_split functions*/
 void	*ft_memcpy(void *dst, const void *src, size_t n);
 char	**ft_split(char const *s, char c);
 /* extra functions */
 char	*ft_strchr(const char *s, int c);
 char	*ft_strtrim(char const *s1, char const *set);
-char	*ft_strjoin_p(char *s1, char *s2);
+char	*fjoin(char *s1, char *s2);
 char	*ft_strrchr(const char *s, int c);
-void function1(const char *s, int *i);
+void	function1(const char *s, int *i);
+char	*ft_strnstr(const char *haystack, const char *needle, int len);
+void	file_io(char **av, t_pipx *pipx, int count);
+void	init_pipx(t_pipx *pipx, t_pipx *pipx2);
+void	find_path(char **env, int *i);
+char	**second_arg(char **av, int option);
+void	close_fds(int n1, int n2, int n3, int n4);
 
 #endif

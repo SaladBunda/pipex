@@ -1,4 +1,4 @@
-SRCS = main.c get_next_line.c get_next_line_utils.c ft_split.c utils.c utils2.c
+SRCS = main.c ft_split.c utils.c utils2.c utils3.c utils4.c
 SRCB = main_bonus.c get_next_line_bonus.c get_next_line_utils_bonus.c ft_split_bonus.c utils_bonus.c utils2_bonus.c
 DIR = ./srcs/
 BONUS_DIR = ./bonus/

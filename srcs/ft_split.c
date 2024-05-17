@@ -6,7 +6,7 @@
 /*   By: ael-maaz <ael-maaz@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/10 16:02:02 by ael-maaz          #+#    #+#             */
-/*   Updated: 2024/05/02 18:10:23 by ael-maaz         ###   ########.fr       */
+/*   Updated: 2024/05/17 06:27:09 by ael-maaz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,17 +26,7 @@ static int	word_c(char *str, char c)
 		count++;
 		while (str[i] != c && str[i])
 		{
-			function1(str,&i);
-			// if(str[i] == '\'')
-			// {
-			// 	while(str[++i] != '\'')
-			// 		continue ;
-			// }	
-			// else if(str[i] == '\"')
-			// {
-			// 	while(str[++i] != '\"')
-			// 		continue ;
-			// }	
+			function1(str, &i);
 			i++;
 		}
 		while (str[i] == c && str[i])
@@ -58,16 +48,16 @@ static int	char_c(char *str, char c)
 	int	i;
 
 	i = 0;
-	if(str[i] == '\'')
+	if (str[i] == '\'')
 	{
 		i++;
-		while(str[i] && str[i] != '\'')
+		while (str[i] && str[i] != '\'')
 			i++;
 	}
-	else if(str[i] == '\"')
+	else if (str[i] == '\"')
 	{
 		i++;
-		while(str[i] && str[i] != '\"')
+		while (str[i] && str[i] != '\"')
 			i++;
 	}
 	while (str[i] && str[i] != c)
@@ -98,7 +88,6 @@ static char	*strdup_i(const char *s1, char c, int *index)
 	return (p);
 }
 
-
 char	**ft_split(char const *s, char c)
 {
 	char	**tab;
@@ -120,7 +109,7 @@ char	**ft_split(char const *s, char c)
 		if (!tab[j])
 			return (freef(tab, j));
 		j++;
-		function1(s,&i);
+		function1(s, &i);
 		while (s[i] && s[i] == c)
 			i++;
 	}
