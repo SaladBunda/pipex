@@ -6,7 +6,7 @@
 /*   By: ael-maaz <ael-maaz@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 22:01:50 by ael-maaz          #+#    #+#             */
-/*   Updated: 2024/05/25 21:21:52 by ael-maaz         ###   ########.fr       */
+/*   Updated: 2024/05/25 22:50:53 by ael-maaz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,10 +126,10 @@ void init_variables(t_pipx **pipx,int **fork_id, int ***pipe_id, int ac)
 	*fork_id = malloc((ac - 3) * sizeof(int));
 	if (!(*fork_id))
 		exit(EXIT_FAILURE);
-	*pipe_id = malloc((ac - 4) * sizeof(int *));
+	*pipe_id = malloc((ac - 3) * sizeof(int *));
 	if (!(*pipe_id))
 		exit(EXIT_FAILURE);
-	while (i < ac - 4)
+	while (i <= ac - 3)
 	{
 		(*pipe_id)[i] = malloc(2 * sizeof(int));
         if (!(*pipe_id)[i])
@@ -140,23 +140,23 @@ void init_variables(t_pipx **pipx,int **fork_id, int ***pipe_id, int ac)
 
 int main(int ac, char **av, char **env)
 {
-	t_pipx	pipx[ac - 3];
 	int		count;
-	int		fork_id[ac - 3];
-	int		pipe_id[ac-4][2];
 	int outfile = open(av[ac - 1], O_RDWR | O_CREAT | O_TRUNC, 0644);
 	int infile = open(av[1],O_RDONLY);
-		// while (1);
+	t_pipx *pipx;
+	int *fork_id;
+	int **pipe_id;
 	if (ac > 4)
 	{
 		count = 0;
-		// init_variables(&pipx, &fork_id, &pipe_id, ac);
+		init_variables(&pipx, &fork_id, &pipe_id, ac);
 		init_pipx(pipx, ac);
 		while (count < ac - 3)
 		{
 			pipx[count].pm = check_args(count, av, env, &pipx[count]);
 			if (pipe(pipe_id[count]) == -1)
 				return (perror("pipe\n"), 1);
+			
 			fork_id[count] = fork();
 			if (fork_id[count] == -1)
 			{
@@ -170,8 +170,8 @@ int main(int ac, char **av, char **env)
 					dup2(pipe_id[count - 1][0], STDIN_FILENO);	
 					dup2(pipe_id[count][1], STDOUT_FILENO);	
 					close(pipe_id[count - 1][0]);
-					// close(pipe_id[count - 1][1]);
-					// close(pipe_id[count][0]);
+					close(pipe_id[count - 1][1]);
+					close(pipe_id[count][0]);
 					close(pipe_id[count][1]);
 				}
 				else if(count == 0)
@@ -192,7 +192,7 @@ int main(int ac, char **av, char **env)
 					close(pipe_id[count][1]);
 					close(pipe_id[count][0]);
 				}
-
+				
 				if (execve(ft_strjoin_p(pipx[count].cmd[pipx[count].pos], pipx[count].pm[0]), pipx[count].pm,env) == -1)
 				{
 					perror("execv:");
@@ -200,14 +200,10 @@ int main(int ac, char **av, char **env)
 				}
 				exit(EXIT_SUCCESS);
 			}
-	
+			
+			if(count != 0)
+				close(pipe_id[count - 1][1]);
 			close(pipe_id[count][1]);
-			// close(pipe_id[count][0]);
-			close(pipe_id[count - 1][1]);
-			// close(pipe_id[count - 1][0]);
-			// close(infile);
-			// if(count == ac - 4)
-			// 	close(outfile);
 			count++;
 		}
 		for(int c = 0;c < ac -3;c++)
