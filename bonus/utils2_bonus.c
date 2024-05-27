@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils2.c                                           :+:      :+:    :+:   */
+/*   utils2_bonus.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ael-maaz <ael-maaz@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 22:25:26 by ael-maaz          #+#    #+#             */
-/*   Updated: 2024/05/02 18:09:42 by ael-maaz         ###   ########.fr       */
+/*   Updated: 2024/05/27 17:36:04 by ael-maaz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,3 +73,40 @@ void function1(const char *s, int *i)
 				(*i)++;
 		}
 }
+
+char *ft_strnstr(const char *haystack, const char *needle, int len)
+{
+	int i;
+	int j;
+	int count;
+
+	i = 0;
+	count = ft_strlen(needle);
+	if (!haystack && len == 0 && needle)
+		return (NULL);
+	if (needle[0] == '\0')
+		return ((char *)haystack);
+	while (haystack[i] && i < len)
+	{
+		j = 0;
+		while (needle[j] == haystack[i + j] && i + j < len)
+		{
+			if (j == count - 1 && needle[j] == haystack[i + j] && haystack[i + j] != '\0')
+				return ((char *)haystack + i);
+			j++;
+		}
+		i++;
+	}
+	return (NULL);
+}
+
+void find_path(char **env, int *i)
+{
+	while (env[*i])
+	{
+		if (ft_strnstr(env[*i], "PATH=", 5) != NULL)
+			return;
+		(*i)++;
+	}
+}
+

@@ -6,17 +6,11 @@
 /*   By: ael-maaz <ael-maaz@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 22:01:50 by ael-maaz          #+#    #+#             */
-/*   Updated: 2024/05/17 07:49:00 by ael-maaz         ###   ########.fr       */
+/*   Updated: 2024/05/27 17:32:37 by ael-maaz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
-#include <stdio.h>
-
-void leaking(void)
-{
-	system("leaks pipex");
-}
 
 char	**check_args(int count, char **av, char **env, t_pipx *pipx)
 {
@@ -103,7 +97,6 @@ void	pipex(t_pipx pipx1, t_pipx pipx2, int pfd[2], char **env)
 
 int	main(int ac, char **av, char **env)
 {
-	atexit(leaking);
 	t_pipx	pipx1;
 	t_pipx	pipx2;
 	int		pfd[2];

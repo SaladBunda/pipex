@@ -6,7 +6,7 @@
 /*   By: ael-maaz <ael-maaz@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 22:02:24 by ael-maaz          #+#    #+#             */
-/*   Updated: 2024/05/17 07:13:18 by ael-maaz         ###   ########.fr       */
+/*   Updated: 2024/05/27 17:42:49 by ael-maaz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,13 @@ typedef struct s_pipx
 
 }	t_pipx;
 
+typedef struct s_input
+{
+	char **env;
+	char **av;
+	int ac;
+} t_input;
+
 /*get next line functions*/
 char	*get_next_line(int fd);
 int		ft_strchr_g(const char *s, int c);
@@ -48,5 +55,8 @@ char	*ft_strtrim(char const *s1, char const *set);
 char	*ft_strjoin_p(char *s1, char *s2);
 char	*ft_strrchr(const char *s, int c);
 void	function1(const char *s, int *i);
+void file_io(char **av, t_pipx *pipx, int current);
+char **second_arg(char **av, int option);
+void find_path(char **env, int *i);
 
 #endif
