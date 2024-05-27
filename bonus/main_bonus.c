@@ -6,164 +6,179 @@
 /*   By: ael-maaz <ael-maaz@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 22:01:50 by ael-maaz          #+#    #+#             */
-/*   Updated: 2024/05/27 17:35:53 by ael-maaz         ###   ########.fr       */
+/*   Updated: 2024/05/27 22:37:34 by ael-maaz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex_bonus.h"
 
-
-
-
-char **check_args(int current, char **av, char **env, t_pipx *pipx)
+char	**check_args(int current, char **av, char **env, t_pipx *px)
 {
+	char	**cmd;
+	char	*str;
+	int		index;
 
-	char **cmd;
-	file_io(av, pipx, current);
+	index = 0;
+	file_io(av, px, current);
 	cmd = second_arg(av, current + 2);
-	int index = 0;
 	find_path(env, &index);
-	pipx->cmd = ft_split(env[index], ':');
-	pipx->cmd[0] = ft_strtrim(pipx->cmd[0], "PATH=");
+	px->cmd = ft_split(env[index], ':');
+	px->cmd[0] = ft_strtrim(px->cmd[0], "PATH=");
 	if (access(cmd[0], X_OK) != -1)
-		return (pipx->cmd[0] = NULL, cmd);
-	while (pipx->cmd[pipx->pos])
+		return (px->cmd[0] = NULL, cmd);
+	while (px->cmd[px->pos])
 	{
-		if (access(ft_strjoin_p(pipx->cmd[pipx->pos], cmd[0]), X_OK) != -1)
-			break;
-		pipx->pos++;
+		str = fjoin(px->cmd[px->pos], cmd[0]);
+		if (access(str, X_OK) != -1)
+			break ;
+		px->pos++;
+		free(str);
 	}
-	if (pipx->cmd[pipx->pos] == NULL)
+	if (px->cmd[px->pos] == NULL)
 		exit(127);
-	return cmd;
+	free(str);
+	int k;
+	for (k = 0;px->cmd[k];k++)
+		dprintf(2,"%s\n",px->cmd[k]);
+	dprintf(2,"%s\n",px->cmd[k]);
+	return (cmd);
 }
 
-void init_pipx(t_pipx *pipx, int ac)
+void	child(t_pipx *p, int c, int **pipe_id, t_input io)
 {
-	int i = 0;
-	while (i < ac - 3)
+	if (c != 0 && c != io.ac - 4)
 	{
-		pipx[i].cmd = NULL;
-		pipx[i].pm = NULL;
-		pipx[i].pos = 0;
-		pipx[i].info = ac - 1;
-		i++;
+		dup2(pipe_id[c - 1][0], STDIN_FILENO);
+		dup2(pipe_id[c][1], STDOUT_FILENO);
+		close(pipe_id[c - 1][0]);
+		close(pipe_id[c - 1][1]);
 	}
-}
-
-void init_variables(t_pipx **pipx, int **fork_id, int ***pipe_id, int ac)
-{
-	int i;
-
-	i = 0;
-	*pipx = malloc((ac - 3) * sizeof(t_pipx));
-	if (!(*pipx))
-		exit(EXIT_FAILURE);
-	*fork_id = malloc((ac - 3) * sizeof(int));
-	if (!(*fork_id))
-		exit(EXIT_FAILURE);
-	*pipe_id = malloc((ac - 3) * sizeof(int *));
-	if (!(*pipe_id))
-		exit(EXIT_FAILURE);
-	while (i <= ac - 3)
+	else if (c == 0)
 	{
-		(*pipe_id)[i] = malloc(2 * sizeof(int));
-		if (!(*pipe_id)[i])
-			exit(EXIT_FAILURE);
-		i++;
-	}
-}
-
-void print_error(char *str, int code)
-{
-	perror(str);
-	exit(code);
-}
-
-
-void child(t_pipx *pipx, int count, int **pipe_id, t_input input)
-{
-	if (count != 0 && count != input.ac - 4)
-	{
-		dup2(pipe_id[count - 1][0], STDIN_FILENO);
-		dup2(pipe_id[count][1], STDOUT_FILENO);
-		close(pipe_id[count - 1][0]);
-		close(pipe_id[count - 1][1]);
-	}
-	else if (count == 0)
-	{
-		dup2(pipx[0].infile, STDIN_FILENO);
-		dup2(pipe_id[count][1], STDOUT_FILENO);
-		close(pipx[0].infile);
+		dup2(p[0].infile, STDIN_FILENO);
+		dup2(pipe_id[c][1], STDOUT_FILENO);
+		close(p[0].infile);
 	}
 	else
 	{
-		dup2(pipx[0].outfile, STDOUT_FILENO);
-		dup2(pipe_id[count - 1][0], STDIN_FILENO);
-		close(pipx[0].outfile);
-		close(pipe_id[count - 1][1]);
-		close(pipe_id[count - 1][0]);
+		dup2(p[0].outfile, STDOUT_FILENO);
+		dup2(pipe_id[c - 1][0], STDIN_FILENO);
+		close(p[0].outfile);
+		close(pipe_id[c - 1][1]);
+		close(pipe_id[c - 1][0]);
 	}
-	close(pipe_id[count][0]);
-	close(pipe_id[count][1]);
-	if (execve(ft_strjoin_p(pipx[count].cmd[pipx[count].pos], pipx[count].pm[0]), pipx[count].pm, input.env) == -1)
+	close(pipe_id[c][0]);
+	close(pipe_id[c][1]);
+	if (execve(fjoin(p[c].cmd[p[c].pos], p[c].pm[0]), p[c].pm, io.env) == -1)
 		print_error("execve", 1);
 }
 
-void loop(t_pipx *pipx, int *fork_id, int **pipe_id, t_input input)
+void	loop(t_pipx *px, int *fork_id, int **pipe_id, t_input input)
 {
-	int count;
-	
+	int	count;
+
 	count = 0;
 	while (count < input.ac - 3)
 	{
-		pipx[count].pm = check_args(count, input.av, input.env, &pipx[count]);
+		px[count].pm = check_args(count, input.av, input.env, &px[count]);
 		if (pipe(pipe_id[count]) == -1)
-				print_error("Pipe", 1);
-			fork_id[count] = fork();
-			if (fork_id[count] == -1)
-				print_error("Fork", 1);
-			if (fork_id[count] == 0) 
-				child(pipx,count,pipe_id,input);
-			else 
+			print_error("Pipe", 1);
+		fork_id[count] = fork();
+		if (fork_id[count] == -1)
+			print_error("Fork", 1);
+		if (fork_id[count] == 0) 
+			child(px, count, pipe_id, input);
+		else 
+		{
+			if (count > 0)
 			{
-				if (count > 0)
-				{
-					close(pipe_id[count - 1][0]);
-					close(pipe_id[count - 1][1]);
-				}
-				count++;
+				close(pipe_id[count - 1][0]);
+				close(pipe_id[count - 1][1]);
 			}
+			count++;
 		}
-}
-t_input init_input(int ac, char ** av, char **env)
-{
-	t_input tmp;
-	tmp.ac = ac;
-	tmp.av = av;
-	tmp.env = env;
-	return tmp;
+	}
 }
 
-int main(int ac, char **av, char **env)
+void free_f(t_pipx *px, int count,int *fork_id, int **pipe_id)
 {
-	t_pipx *pipx;
-	t_input input;
-	int *fork_id;
-	int **pipe_id;
+    int i;
+
+    // Free the cmd and pm fields for each t_pipx object in the array
+    for(i = 0; i < count; i++)
+    {
+        if(px[i].cmd != NULL)
+        {
+            for(int j = 0; px[i].cmd[j] != NULL; j++)
+            {
+                free(px[i].cmd[j]);
+            }
+            free(px[i].cmd);
+        }
+
+        if(px[i].pm != NULL)
+        {
+            for(int j = 0; px[i].pm[j] != NULL; j++)
+            {
+                free(px[i].pm[j]);
+            }
+            free(px[i].pm);
+        }
+    }
+	free(fork_id);
+	if(pipe_id != NULL)
+    {
+        for(i = 0; i < count; i++)
+        {
+            if(pipe_id[i] != NULL)
+            {
+                free(pipe_id[i]);
+            }
+        }
+        free(pipe_id);
+    }
+    // Free the px array
+    free(px);
+}
+
+int	fcmp(const char *s1, const char *s2)
+{
+	int	i;
+
+	i = 0;
+	while ((s1[i] != '\0' || s2[i] != '\0'))
+	{
+		if ((unsigned char)s1[i] > (unsigned char)s2[i])
+			return (1);
+		else if ((unsigned char)s1[i] < (unsigned char)s2[i])
+			return (-1);
+		i++;
+	}
+	return (0);
+}
+
+
+int	main(int ac, char **av, char **env)
+{
+	t_pipx	*px;
+	t_input	input;
+	int		*fork_id;
+	int		**pipe_id;
 
 	if (ac > 4)
 	{
-		input = init_input(ac,av,env);
-		init_variables(&pipx, &fork_id, &pipe_id, ac);
-		init_pipx(pipx, ac);
-		loop(pipx,fork_id,pipe_id,input);
+		if(fcmp(av[1],"here_doc") == 0)
+			here_doc();
+		input = init_input(ac, av, env);
+		init_variables(&px, &fork_id, &pipe_id, ac);
+		init_pipx(px, ac);
+		loop(px, fork_id, pipe_id, input);
 		close(pipe_id[ac - 4][0]);
-		close(pipx[0].infile);
-		close(pipx[0].outfile);
+		close(px[0].infile);
+		close(px[0].outfile);
+		free_f(px,ac - 3,fork_id,pipe_id);
 		while (wait(NULL) > 0)
 			;
-
 		exit(EXIT_SUCCESS);
 	}
 	exit(EXIT_FAILURE);

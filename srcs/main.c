@@ -6,7 +6,7 @@
 /*   By: ael-maaz <ael-maaz@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 22:01:50 by ael-maaz          #+#    #+#             */
-/*   Updated: 2024/05/27 17:32:37 by ael-maaz         ###   ########.fr       */
+/*   Updated: 2024/05/27 18:44:13 by ael-maaz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ void	first_cmd(t_pipx pipx1, char **env, int pfd[2])
 	close(pipx1.infile);
 	close(pfd[0]);
 	dup2(pfd[1], STDOUT_FILENO);
+	while(1);
 	if (execve(fjoin(pipx1.cmd[pipx1.pos], pipx1.prm[0]), pipx1.prm, env) == -1)
 	{
 		perror("execv:");
@@ -69,6 +70,7 @@ void	second_cmd(t_pipx pipx2, char **env, int pfd[2], t_pipx pipx1)
 
 void	pipex(t_pipx pipx1, t_pipx pipx2, int pfd[2], char **env)
 {
+	
 	int	fid[2];
 
 	if (pipe(pfd) == -1)
@@ -103,6 +105,7 @@ int	main(int ac, char **av, char **env)
 
 	if (ac == 5)
 	{
+		
 		init_pipx(&pipx1, &pipx2);
 		pipx1.prm = check_args(0, av, env, &pipx1);
 		pipx2.prm = check_args(1, av, env, &pipx2);

@@ -6,13 +6,13 @@
 /*   By: ael-maaz <ael-maaz@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 22:25:26 by ael-maaz          #+#    #+#             */
-/*   Updated: 2024/05/27 17:36:04 by ael-maaz         ###   ########.fr       */
+/*   Updated: 2024/05/27 18:12:54 by ael-maaz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex_bonus.h"
 
-char	*ft_strjoin_p(char *s1, char *s2)
+char	*fjoin(char *s1, char *s2)
 {
 	size_t	length;
 	char	*p;
@@ -58,41 +58,41 @@ char	*ft_strrchr(const char *s, int c)
 	return (0);
 }
 
-void function1(const char *s, int *i)
+void	function1(const char *s, int *i)
 {
-	if(s[*i] && s[*i] == '\'')
+	if (s[*i] && s[*i] == '\'')
 	{
 		(*i)++;
-		while(s[*i] && s[*i] != '\'')
+		while (s[*i] && s[*i] != '\'')
 			(*i)++;
-		}
-		else if (s[*i] && s[*i] == '\"')
-		{
+	}
+	else if (s[*i] && s[*i] == '\"')
+	{
+		(*i)++;
+		while (s[*i] && s[*i] != '\"')
 			(*i)++;
-			while(s[*i] && s[*i] != '\"')
-				(*i)++;
-		}
+	}
 }
 
-char *ft_strnstr(const char *haystack, const char *needle, int len)
+char	*ft_strnstr(const char *hay, const char *needle, int len)
 {
-	int i;
-	int j;
-	int count;
+	int	i;
+	int	j;
+	int	count;
 
 	i = 0;
 	count = ft_strlen(needle);
-	if (!haystack && len == 0 && needle)
+	if (!hay && len == 0 && needle)
 		return (NULL);
 	if (needle[0] == '\0')
-		return ((char *)haystack);
-	while (haystack[i] && i < len)
+		return ((char *)hay);
+	while (hay[i] && i < len)
 	{
 		j = 0;
-		while (needle[j] == haystack[i + j] && i + j < len)
+		while (needle[j] == hay[i + j] && i + j < len)
 		{
-			if (j == count - 1 && needle[j] == haystack[i + j] && haystack[i + j] != '\0')
-				return ((char *)haystack + i);
+			if (j == count - 1 && needle[j] == hay[i + j] && hay[i + j] != '\0')
+				return ((char *)hay + i);
 			j++;
 		}
 		i++;
@@ -100,13 +100,12 @@ char *ft_strnstr(const char *haystack, const char *needle, int len)
 	return (NULL);
 }
 
-void find_path(char **env, int *i)
+void	find_path(char **env, int *i)
 {
 	while (env[*i])
 	{
 		if (ft_strnstr(env[*i], "PATH=", 5) != NULL)
-			return;
+			return ;
 		(*i)++;
 	}
 }
-

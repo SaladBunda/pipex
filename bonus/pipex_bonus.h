@@ -6,7 +6,7 @@
 /*   By: ael-maaz <ael-maaz@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 22:02:24 by ael-maaz          #+#    #+#             */
-/*   Updated: 2024/05/27 17:42:49 by ael-maaz         ###   ########.fr       */
+/*   Updated: 2024/05/27 18:13:19 by ael-maaz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,10 +34,10 @@ typedef struct s_pipx
 
 typedef struct s_input
 {
-	char **env;
-	char **av;
-	int ac;
-} t_input;
+	char	**env;
+	char	**av;
+	int		ac;
+}	t_input;
 
 /*get next line functions*/
 char	*get_next_line(int fd);
@@ -52,11 +52,15 @@ char	**ft_split(char const *s, char c);
 /* extra functions */
 char	*ft_strchr(const char *s, int c);
 char	*ft_strtrim(char const *s1, char const *set);
-char	*ft_strjoin_p(char *s1, char *s2);
+char	*fjoin(char *s1, char *s2);
 char	*ft_strrchr(const char *s, int c);
 void	function1(const char *s, int *i);
-void file_io(char **av, t_pipx *pipx, int current);
-char **second_arg(char **av, int option);
-void find_path(char **env, int *i);
+void	file_io(char **av, t_pipx *pipx, int current);
+char	**second_arg(char **av, int option);
+void	find_path(char **env, int *i);
+void	init_pipx(t_pipx *pipx, int ac);
+void	init_variables(t_pipx **pipx, int **fork_id, int ***pipe_id, int ac);
+void	print_error(char *str, int code);
+t_input	init_input(int ac, char **av, char **env);
 
 #endif
