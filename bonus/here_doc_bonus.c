@@ -6,7 +6,7 @@
 /*   By: ael-maaz <ael-maaz@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 14:42:20 by ael-maaz          #+#    #+#             */
-/*   Updated: 2024/05/28 16:46:22 by ael-maaz         ###   ########.fr       */
+/*   Updated: 2024/05/28 16:49:36 by ael-maaz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,18 +97,20 @@ void	loop_hd(t_pipx *px, int *fork_id, int **pipe_id, t_input input)
 }
 
 void reading(char *limiter)
+
 {
 	char *line;
 
 	int error;
 	while (error != -1)
-		{
+	{
 		line = get_next_line(0);
 		if (!line)
 			break ;
 		if (line[0] == '\0')
 			break ;
 		if (fcmp(line,limiter) == 0)
-			return (free(line), -1);
+			return (free(line));
 		free(line);
+	}
 }

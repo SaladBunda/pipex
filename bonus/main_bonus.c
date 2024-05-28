@@ -6,7 +6,7 @@
 /*   By: ael-maaz <ael-maaz@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 22:01:50 by ael-maaz          #+#    #+#             */
-/*   Updated: 2024/05/28 16:46:56 by ael-maaz         ###   ########.fr       */
+/*   Updated: 2024/05/28 16:49:26 by ael-maaz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,17 +139,7 @@ void here_doc(t_input input)
 	
 	if(input.ac > 6)
 	{
-		while (error != -1)
-		{
-		line = get_next_line(0, &error);
-		if (!line)
-			break ;
-		if (line[0] == '\0')
-			break ;
-		if (test_line(line, a, b) == -1)
-			return (free(line), -1);
-		free(line);
-	}
+		reading(limiter);
 		input.ac--;
 		limiter = ft_strdup(input.av[2]);
 		init_variables(&px, &fork_id, &pipe_id, input.ac);
