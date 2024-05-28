@@ -6,7 +6,7 @@
 /*   By: ael-maaz <ael-maaz@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 22:01:50 by ael-maaz          #+#    #+#             */
-/*   Updated: 2024/05/28 16:49:26 by ael-maaz         ###   ########.fr       */
+/*   Updated: 2024/05/28 16:50:06 by ael-maaz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,7 +126,6 @@ void free_f(t_pipx *px, int count,int *fork_id, int **pipe_id)
         }
         free(pipe_id);
     }
-    // Free the px array
     free(px);
 }
 
