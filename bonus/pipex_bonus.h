@@ -6,7 +6,7 @@
 /*   By: ael-maaz <ael-maaz@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 22:02:24 by ael-maaz          #+#    #+#             */
-/*   Updated: 2024/05/27 18:13:19 by ael-maaz         ###   ########.fr       */
+/*   Updated: 2024/05/28 16:47:24 by ael-maaz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,5 +62,7 @@ void	init_pipx(t_pipx *pipx, int ac);
 void	init_variables(t_pipx **pipx, int **fork_id, int ***pipe_id, int ac);
 void	print_error(char *str, int code);
 t_input	init_input(int ac, char **av, char **env);
+void	init_var_hd(t_pipx **pipx, int **fork_id, int ***pipe_id, int ac);
+int	fcmp(char *s1, char *s2);
 
 #endif
