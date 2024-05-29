@@ -100,17 +100,28 @@ void reading(char *limiter)
 
 {
 	char *line;
-
-	int error;
-	while (error != -1)
+	int result;
+	// int error;
+	// line = get_next_line(0);
+	int here_doc = open("here_doc.txt",O_CREAT | O_RDWR |O_TRUNC , 0666);
+	while (1)
 	{
 		line = get_next_line(0);
+		dprintf(2,"%s\n",line);
 		if (!line)
 			break ;
-		if (line[0] == '\0')
-			break ;
-		if (fcmp(line,limiter) == 0)
-			return (free(line));
-		free(line);
+		// if (line[0] == '\0')
+		// 	break ;
+		result = fcmp(line,limiter);
+		dprintf(2,"%d\n",result);
+		if (result == 0)
+			break;
+		write(here_doc,ft_strjoin(line,"\n"),ft_strlen(line) + 1);
+		// free(line);
 	}
+}
+
+int main(void)
+{
+	reading("bunda");
 }
