@@ -96,32 +96,28 @@ void	loop_hd(t_pipx *px, int *fork_id, int **pipe_id, t_input input)
 	}
 }
 
-void reading(char *limiter)
 
+int reading(char *limiter)
 {
 	char *line;
 	int result;
-	// int error;
-	// line = get_next_line(0);
-	int here_doc = open("here_doc.txt",O_CREAT | O_RDWR |O_TRUNC , 0666);
+	char *str;
+	int here_doc;
+
+	here_doc = open("here_doc.txt",O_CREAT | O_RDWR | O_TRUNC , 0666);
 	while (1)
 	{
 		line = get_next_line(0);
-		dprintf(2,"%s\n",line);
 		if (!line)
 			break ;
-		// if (line[0] == '\0')
-		// 	break ;
 		result = fcmp(line,limiter);
-		dprintf(2,"%d\n",result);
 		if (result == 0)
 			break;
-		write(here_doc,ft_strjoin(line,"\n"),ft_strlen(line) + 1);
-		// free(line);
+		str = ft_strjoin(line,"\n");
+		write(here_doc,str,ft_strlen(line) + 1);
+		free(str);
+		free(line);
 	}
-}
-
-int main(void)
-{
-	reading("bunda");
+	free(line);
+	return (here_doc);
 }

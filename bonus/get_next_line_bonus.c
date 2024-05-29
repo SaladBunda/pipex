@@ -52,8 +52,6 @@ char	*gettline(char *buffer)
 	i = 0;
 	while (buffer[i] && buffer[i] != '\n')
 		i++;
-	// if (buffer[i] == '\n')
-	// 	i++;
 	line = malloc(sizeof(char) *(i + 1));
 	if (!line)
 		return (NULL);

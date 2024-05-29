@@ -64,6 +64,6 @@ void	print_error(char *str, int code);
 t_input	init_input(int ac, char **av, char **env);
 void	init_var_hd(t_pipx **pipx, int **fork_id, int ***pipe_id, int ac);
 int	fcmp(char *s1, char *s2);
-void reading(char *limiter);
+int reading(char *limiter);
 
 #endif
