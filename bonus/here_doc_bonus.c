@@ -12,6 +12,19 @@
 
 #include "pipex_bonus.h"
 
+void	file_io_hd(char **av, t_pipx *pipx, int current)
+{
+	if (current == 0)
+	{
+		pipx->outfile = open(av[pipx->info + 1], O_RDWR | O_CREAT | O_TRUNC, 0644);
+		if (pipx->outfile == -1)
+		{
+			perror("outfile:");
+			exit(EXIT_FAILURE);
+		}
+	}
+}
+
 char	**check_args_hd(int current, char **av, char **env, t_pipx *px)
 {
 	char	**cmd;
@@ -19,7 +32,7 @@ char	**check_args_hd(int current, char **av, char **env, t_pipx *px)
 	int		index;
 
 	index = 0;
-	// file_io(av, px, current);
+	file_io_hd(av, px, current);
 	cmd = second_arg(av, current + 3);
 	find_path(env, &index);
 	px->cmd = ft_split(env[index], ':');
@@ -51,6 +64,7 @@ void	child_hd(t_pipx *p, int c, int **pipe_id, t_input io)
 	}
 	else if (c == 0)
 	{
+		dprintf(2,"inside else if contion c =%d infile:%d\n",c,p[0].infile);
 		dup2(p[0].infile, STDIN_FILENO);
 		dup2(pipe_id[c][1], STDOUT_FILENO);
 		close(p[0].infile);
@@ -72,11 +86,13 @@ void	child_hd(t_pipx *p, int c, int **pipe_id, t_input io)
 void	loop_hd(t_pipx *px, int *fork_id, int **pipe_id, t_input input)
 {
 	int	count;
-
+	// dprintf(2,"entered loop-hd\n");
 	count = 0;
 	while (count < input.ac - 3)
 	{
+		// dprintf(2,"%d\n",count);
 		px[count].pm = check_args_hd(count, input.av, input.env, &px[count]);
+		// dprintf(2,"chekcd arguments\n");
 		if (pipe(pipe_id[count]) == -1)
 			print_error("Pipe", 1);
 		fork_id[count] = fork();

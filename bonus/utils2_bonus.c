@@ -102,10 +102,13 @@ char	*ft_strnstr(const char *hay, const char *needle, int len)
 
 void	find_path(char **env, int *i)
 {
+	// dprintf(2,"inside find path function\n");
 	while (env[*i])
 	{
+		// dprintf(2,"%s\n",env[*i]);
 		if (ft_strnstr(env[*i], "PATH=", 5) != NULL)
 			return ;
 		(*i)++;
 	}
+	// dprintf(2,"at the end of the fp function\n");
 }

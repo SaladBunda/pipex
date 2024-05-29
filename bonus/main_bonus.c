@@ -135,21 +135,23 @@ void here_doc(t_input input)
 	int		*fork_id;
 	int		**pipe_id;
 	char	*limiter;
-	dprintf(2,"entered here_doc funtion\n");
+
 	if(input.ac >= 6)
 	{
-	dprintf(2,"entered if\n");
-		
 		limiter = ft_strdup(input.av[2]);
-		px[0].infile = reading(limiter);
-		dprintf(2,"%d\n",px[0].infile);
-		input.ac--;
 		init_variables(&px, &fork_id, &pipe_id, input.ac);
+		px[0].infile = reading(limiter);
+		dprintf(2,"inside main infile:%d\n",px[0].infile);
+		input.ac--;
 		init_pipx(px, input.ac);
-		loop(px, fork_id, pipe_id, input);
-		
+		loop_hd(px, fork_id, pipe_id, input);
+		close(pipe_id[input.ac - 3][0]);
+		close(px[0].infile);
+		close(px[0].outfile);
 		
 		free(limiter);
+		// unlink("here_doc.txt");
+		exit(EXIT_SUCCESS);
 	}
 	else
 		exit(EXIT_FAILURE);

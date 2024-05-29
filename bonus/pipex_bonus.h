@@ -65,5 +65,6 @@ t_input	init_input(int ac, char **av, char **env);
 void	init_var_hd(t_pipx **pipx, int **fork_id, int ***pipe_id, int ac);
 int	fcmp(char *s1, char *s2);
 int reading(char *limiter);
+void	loop_hd(t_pipx *px, int *fork_id, int **pipe_id, t_input input);
 
 #endif
