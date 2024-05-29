@@ -16,6 +16,12 @@ void	file_io_hd(char **av, t_pipx *pipx, int current)
 {
 	if (current == 0)
 	{
+		pipx->infile = open("here_doc.txt", O_RDONLY, 0644);
+		if (pipx->infile == -1)
+		{
+			perror("Infile:");
+			exit(EXIT_FAILURE);
+		}
 		pipx->outfile = open(av[pipx->info + 1], O_RDWR | O_CREAT | O_TRUNC, 0644);
 		if (pipx->outfile == -1)
 		{
@@ -113,7 +119,7 @@ void	loop_hd(t_pipx *px, int *fork_id, int **pipe_id, t_input input)
 }
 
 
-int reading(char *limiter)
+void reading(char *limiter)
 {
 	char *line;
 	int result;
@@ -135,5 +141,5 @@ int reading(char *limiter)
 		free(line);
 	}
 	free(line);
-	return (here_doc);
+	close(here_doc);
 }

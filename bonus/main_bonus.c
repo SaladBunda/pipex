@@ -140,8 +140,7 @@ void here_doc(t_input input)
 	{
 		limiter = ft_strdup(input.av[2]);
 		init_variables(&px, &fork_id, &pipe_id, input.ac);
-		px[0].infile = reading(limiter);
-		dprintf(2,"inside main infile:%d\n",px[0].infile);
+		reading(limiter);
 		input.ac--;
 		init_pipx(px, input.ac);
 		loop_hd(px, fork_id, pipe_id, input);
