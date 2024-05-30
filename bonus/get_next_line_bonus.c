@@ -17,12 +17,12 @@ char	*ft_read(int fd, char *buffer, int index)
 	char	*tmp;
 	char	*frees;
 
-	tmp = malloc(sizeof(char) * 100 + 1);
+	tmp = malloc(sizeof(char) * 1000 + 1);
 	if (!tmp)
 		return (free(buffer), buffer = NULL, NULL);
 	while (index > 0)
 	{
-		index = read(fd, tmp, 100);
+		index = read(fd, tmp, 1000);
 		if (index == -1)
 			return (free(buffer), free(tmp), NULL);
 		if (index != 0)
@@ -52,6 +52,8 @@ char	*gettline(char *buffer)
 	i = 0;
 	while (buffer[i] && buffer[i] != '\n')
 		i++;
+	if(buffer[i] == '\n')
+		i++;
 	line = malloc(sizeof(char) *(i + 1));
 	if (!line)
 		return (NULL);
@@ -59,6 +61,8 @@ char	*gettline(char *buffer)
 	line[i] = '\0';
 	while (++j < i)
 		line[j] = buffer[j];
+	if (i == 0 && buffer[0] == '\n') // if the line is empty
+        line[0] = '\0';
 	return (line);
 }
 

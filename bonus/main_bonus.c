@@ -149,7 +149,7 @@ void here_doc(t_input input)
 		close(px[0].outfile);
 		
 		free(limiter);
-		// unlink("here_doc.txt");
+		unlink("here_doc.txt");
 		exit(EXIT_SUCCESS);
 	}
 	else

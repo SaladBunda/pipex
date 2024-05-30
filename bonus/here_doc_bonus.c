@@ -123,21 +123,22 @@ void reading(char *limiter)
 {
 	char *line;
 	int result;
-	char *str;
+	// char *str;
 	int here_doc;
 
 	here_doc = open("here_doc.txt",O_CREAT | O_RDWR | O_TRUNC , 0666);
 	while (1)
 	{
 		line = get_next_line(0);
+		dprintf(2,"line:%s\n",line);
 		if (!line)
 			break ;
-		result = fcmp(line,limiter);
+		result = fcmp(line,ft_strjoin(limiter,"\n"));
 		if (result == 0)
 			break;
-		str = ft_strjoin(line,"\n");
-		write(here_doc,str,ft_strlen(line) + 1);
-		free(str);
+		// str = ft_strjoin(line,"\n");
+		write(here_doc,line,ft_strlen(line));
+		// free(str);
 		free(line);
 	}
 	free(line);
