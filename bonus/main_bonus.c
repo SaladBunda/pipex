@@ -147,7 +147,6 @@ void here_doc(t_input input)
 		close(pipe_id[input.ac - 3][0]);
 		close(px[0].infile);
 		close(px[0].outfile);
-		
 		free(limiter);
 		unlink("here_doc.txt");
 		exit(EXIT_SUCCESS);

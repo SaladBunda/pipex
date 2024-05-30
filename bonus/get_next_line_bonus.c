@@ -33,7 +33,7 @@ char	*ft_read(int fd, char *buffer, int index)
 			if (!buffer)
 				return (free(frees), free(tmp), NULL);
 			free(frees);
-			if (ft_strchr_g(buffer, '\n'))
+			if (ft_strchr_g(buffer, '\n') != 0)
 				break ;
 		}
 	}
@@ -61,8 +61,6 @@ char	*gettline(char *buffer)
 	line[i] = '\0';
 	while (++j < i)
 		line[j] = buffer[j];
-	if (i == 0 && buffer[0] == '\n') // if the line is empty
-        line[0] = '\0';
 	return (line);
 }
 

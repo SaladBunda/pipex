@@ -72,6 +72,7 @@ char	*ft_strdup(const char *s1)
 	return (p);
 }
 
+
 char	*ft_strjoin(char *s1, char *s2)
 {
 	size_t	length;
@@ -107,7 +108,7 @@ int	ft_strchr_g(const char *s, int c)
 	while (s[i])
 	{
 		if (s[i] == c)
-			return (i);
+			return (1);
 		i++;
 	}
 	return (0);
