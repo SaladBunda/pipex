@@ -6,7 +6,7 @@
 /*   By: ael-maaz <ael-maaz@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 22:01:50 by ael-maaz          #+#    #+#             */
-/*   Updated: 2024/05/31 22:43:23 by ael-maaz         ###   ########.fr       */
+/*   Updated: 2024/05/31 22:57:13 by ael-maaz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,6 +144,8 @@ void	here_doc(t_input input)
 		input.ac--;
 		init_pipx(px, input.ac);
 		loop_hd(px, fork_id, pipe_id, input);
+		dprintf()
+		close(pipe_id[input.ac - 4][0]);
 		close(px[0].infile);
 		close(px[0].outfile);
 		free(limiter);
