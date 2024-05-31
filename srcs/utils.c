@@ -6,7 +6,7 @@
 /*   By: ael-maaz <ael-maaz@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/05 18:37:11 by ael-maaz          #+#    #+#             */
-/*   Updated: 2024/05/17 07:43:08 by ael-maaz         ###   ########.fr       */
+/*   Updated: 2024/05/31 22:36:01 by ael-maaz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,8 +87,7 @@ char	*ft_strtrim(char *s1, char const *set)
 	if (!p)
 		return (NULL);
 	ft_strlcpy(p, &s1[i], size + 1);
-	free(s1);
-	return (p);
+	return (free(s1), p);
 }
 
 char	*fjoin(char *s1, char *s2)

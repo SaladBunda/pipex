@@ -6,7 +6,7 @@
 /*   By: ael-maaz <ael-maaz@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 22:25:26 by ael-maaz          #+#    #+#             */
-/*   Updated: 2024/05/27 18:12:54 by ael-maaz         ###   ########.fr       */
+/*   Updated: 2024/05/31 22:41:33 by ael-maaz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,13 +102,10 @@ char	*ft_strnstr(const char *hay, const char *needle, int len)
 
 void	find_path(char **env, int *i)
 {
-	// dprintf(2,"inside find path function\n");
 	while (env[*i])
 	{
-		// dprintf(2,"%s\n",env[*i]);
 		if (ft_strnstr(env[*i], "PATH=", 5) != NULL)
 			return ;
 		(*i)++;
 	}
-	// dprintf(2,"at the end of the fp function\n");
 }

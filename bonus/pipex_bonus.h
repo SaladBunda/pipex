@@ -6,13 +6,16 @@
 /*   By: ael-maaz <ael-maaz@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 22:02:24 by ael-maaz          #+#    #+#             */
-/*   Updated: 2024/05/28 16:49:42 by ael-maaz         ###   ########.fr       */
+/*   Updated: 2024/05/31 22:45:50 by ael-maaz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PIPEX_BONUS_H
 # define PIPEX_BONUS_H
 
+# define RD O_RDWR
+# define CR O_CREAT
+# define TR O_TRUNC
 # include <stdio.h>
 # include <stdlib.h>
 # include <unistd.h>
@@ -63,8 +66,8 @@ void	init_variables(t_pipx **pipx, int **fork_id, int ***pipe_id, int ac);
 void	print_error(char *str, int code);
 t_input	init_input(int ac, char **av, char **env);
 void	init_var_hd(t_pipx **pipx, int **fork_id, int ***pipe_id, int ac);
-int	fcmp(char *s1, char *s2);
-void reading(char *limiter);
+int		fcmp(char *s1, char *s2);
+void	reading(char *limiter);
 void	loop_hd(t_pipx *px, int *fork_id, int **pipe_id, t_input input);
 
 #endif

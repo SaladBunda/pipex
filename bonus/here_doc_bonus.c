@@ -6,7 +6,7 @@
 /*   By: ael-maaz <ael-maaz@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 14:42:20 by ael-maaz          #+#    #+#             */
-/*   Updated: 2024/05/28 16:49:36 by ael-maaz         ###   ########.fr       */
+/*   Updated: 2024/05/31 22:47:35 by ael-maaz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	file_io_hd(char **av, t_pipx *pipx, int current)
 			perror("Infile:");
 			exit(EXIT_FAILURE);
 		}
-		pipx->outfile = open(av[pipx->info + 1], O_RDWR | O_CREAT | O_TRUNC, 0644);
+		pipx->outfile = open(av[pipx->info + 1], CR | RD | TR, 0644);
 		if (pipx->outfile == -1)
 		{
 			perror("outfile:");
@@ -91,6 +91,7 @@ void	child_hd(t_pipx *p, int c, int **pipe_id, t_input io)
 void	loop_hd(t_pipx *px, int *fork_id, int **pipe_id, t_input input)
 {
 	int	count;
+
 	count = 0;
 	while (count < input.ac - 3)
 	{
@@ -114,25 +115,24 @@ void	loop_hd(t_pipx *px, int *fork_id, int **pipe_id, t_input input)
 	}
 }
 
-
-void reading(char *limiter)
+void	reading(char *limiter)
 {
-	char *line;
-	int result;
-	char *str;
-	int here_doc;
+	char	*line;
+	int		result;
+	char	*str;
+	int		here_doc;
 
-	here_doc = open("here_doc.txt",O_CREAT | O_RDWR | O_TRUNC , 0666);
+	here_doc = open("here_doc.txt", O_CREAT | O_RDWR | O_TRUNC, 0666);
 	while (1)
 	{
 		line = get_next_line(0);
-		str = ft_strjoin(limiter,"\n");
+		str = ft_strjoin(limiter, "\n");
 		if (!line)
 			break ;
-		result = fcmp(line,str);
+		result = fcmp(line, str);
 		if (result == 0)
-			break;
-		write(here_doc,line,ft_strlen(line));
+			break ;
+		write(here_doc, line, ft_strlen(line));
 		free(line);
 		free(str);
 	}

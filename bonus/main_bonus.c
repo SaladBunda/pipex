@@ -6,7 +6,7 @@
 /*   By: ael-maaz <ael-maaz@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 22:01:50 by ael-maaz          #+#    #+#             */
-/*   Updated: 2024/05/28 16:50:06 by ael-maaz         ###   ########.fr       */
+/*   Updated: 2024/05/31 22:43:23 by ael-maaz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,47 +96,47 @@ void	loop(t_pipx *px, int *fork_id, int **pipe_id, t_input input)
 	}
 }
 
-void free_f(t_pipx *px, int count,int *fork_id, int **pipe_id)
-{
-    int i;
+// void	free_f(t_pipx *px, int count,int *fork_id, int **pipe_id)
+// {
+//     int i;
 
-    for(i = 0; i < count; i++)
-    {
-        if(px[i].cmd != NULL)
-        {
-            for(int j = 0; px[i].cmd[j] != NULL; j++)
-                free(px[i].cmd[j]);
-            free(px[i].cmd);
-        }
+//     for(i = 0; i < count; i++)
+//     {
+//         if(px[i].cmd != NULL)
+//         {
+//             for(int j = 0; px[i].cmd[j] != NULL; j++)
+//                 free(px[i].cmd[j]);
+//             free(px[i].cmd);
+//         }
 
-        if(px[i].pm != NULL)
-        {
-            for(int j = 0; px[i].pm[j] != NULL; j++)
-                free(px[i].pm[j]);
-            free(px[i].pm);
-        }
-    }
-	free(fork_id);
-	if(pipe_id != NULL)
-    {
-        for(i = 0; i < count; i++)
-        {
-            if(pipe_id[i] != NULL)
-                free(pipe_id[i]);
-        }
-        free(pipe_id);
-    }
-    free(px);
-}
+//         if(px[i].pm != NULL)
+//         {
+//             for(int j = 0; px[i].pm[j] != NULL; j++)
+//                 free(px[i].pm[j]);
+//             free(px[i].pm);
+//         }
+//     }
+// 	free(fork_id);
+// 	if(pipe_id != NULL)
+//     {
+//         for(i = 0; i < count; i++)
+//         {
+//             if(pipe_id[i] != NULL)
+//                 free(pipe_id[i]);
+//         }
+//         free(pipe_id);
+//     }
+//     free(px);
+// }
 
-void here_doc(t_input input)
+void	here_doc(t_input input)
 {
 	t_pipx	*px;
 	int		*fork_id;
 	int		**pipe_id;
 	char	*limiter;
 
-	if(input.ac >= 6)
+	if (input.ac >= 6)
 	{
 		limiter = ft_strdup(input.av[2]);
 		init_variables(&px, &fork_id, &pipe_id, input.ac);
@@ -144,7 +144,6 @@ void here_doc(t_input input)
 		input.ac--;
 		init_pipx(px, input.ac);
 		loop_hd(px, fork_id, pipe_id, input);
-		close(pipe_id[input.ac - 3][0]);
 		close(px[0].infile);
 		close(px[0].outfile);
 		free(limiter);
@@ -165,7 +164,7 @@ int	main(int ac, char **av, char **env)
 	if (ac > 4)
 	{
 		input = init_input(ac, av, env);
-		if(fcmp(av[1],"here_doc") == 0)
+		if (fcmp(av[1], "here_doc") == 0)
 			here_doc(input);
 		else
 		{
@@ -175,7 +174,7 @@ int	main(int ac, char **av, char **env)
 			close(pipe_id[ac - 4][0]);
 			close(px[0].infile);
 			close(px[0].outfile);
-			free_f(px,ac - 3,fork_id,pipe_id);
+			// free_f(px,ac - 3,fork_id,pipe_id);
 			while (wait(NULL) > 0)
 				;
 			exit(EXIT_SUCCESS);

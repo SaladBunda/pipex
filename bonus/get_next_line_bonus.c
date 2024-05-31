@@ -6,7 +6,7 @@
 /*   By: ael-maaz <ael-maaz@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 19:08:58 by ael-maaz          #+#    #+#             */
-/*   Updated: 2024/05/28 16:50:43 by ael-maaz         ###   ########.fr       */
+/*   Updated: 2024/05/31 22:48:22 by ael-maaz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ char	*gettline(char *buffer)
 	i = 0;
 	while (buffer[i] && buffer[i] != '\n')
 		i++;
-	if(buffer[i] == '\n')
+	if (buffer[i] == '\n')
 		i++;
 	line = malloc(sizeof(char) *(i + 1));
 	if (!line)
