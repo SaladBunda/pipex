@@ -112,7 +112,7 @@ int	main(int ac, char **av, char **env)
 		while (wait(NULL) > 0)
 			;
 		freeing(&pipx1, &pipx2);
-		system("leaks pipex");
+		// system("leaks pipex");
 		exit(EXIT_SUCCESS);
 	}
 	exit(EXIT_FAILURE);

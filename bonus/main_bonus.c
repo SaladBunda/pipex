@@ -27,8 +27,7 @@ char	**check_args(int current, char **av, char **env, t_pipx *px)
 	px->cmd[0]= ft_strtrim(px->cmd[0], "PATH=");
 	free(str);
 	if (access(cmd[0], X_OK) != -1)
-		return (free(px->cmd[0]),px->cmd[0] = NULL, cmd);
-	
+		return (free_str(px->cmd),px->cmd[0] = NULL, cmd);
 	while (px->cmd[px->pos])
 	{
 		str = fjoin(px->cmd[px->pos], cmd[0]);
@@ -126,10 +125,7 @@ void	here_doc(t_input input)
 	else
 		exit(EXIT_FAILURE);
 }
-void leaks()
-{
-	system("leaks pipex");
-}
+
 int	main(int ac, char **av, char **env)
 {
 	t_pipx	*px;
@@ -137,7 +133,7 @@ int	main(int ac, char **av, char **env)
 	int		*fork_id;
 	int		**pipe_id;
 
-	atexit(leaks);
+	// atexit(leaks);
 	if (ac > 4)
 	{
 		input = init_input(ac, av, env);

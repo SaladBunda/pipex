@@ -48,10 +48,7 @@ void	free_f(t_pipx *px, int count, int *fork_id, int **pipe_id)
 	{
 		j = -1;
 		while (px[i].cmd[++j] != NULL)
-		{
-			dprintf(2,"%s      %p\n",px[i].cmd[j],px[i].cmd[j]);
 			free(px[i].cmd[j]);
-		}
 		free(px[i].cmd);
 		j = -1;
 		while (px[i].pm[++j] != NULL)
@@ -85,4 +82,14 @@ void	init_variables_hd(t_pipx **pipx, int **fork_id, int ***pipe_id, int ac)
 			exit(EXIT_FAILURE);
 		i++;
 	}
+}
+
+void free_str(char **str)
+{
+	int	i;
+
+	i = -1;
+	while (str[++i])
+		free(str[i]);
+	// free(str);
 }

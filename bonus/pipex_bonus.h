@@ -70,6 +70,6 @@ int		fcmp(char *s1, char *s2);
 void	reading(char *limiter);
 void	loop_hd(t_pipx *px, int *fork_id, int **pipe_id, t_input input);
 void	free_f(t_pipx *px, int count, int *fork_id, int **pipe_id);
-int free_str(char **str);
+void free_str(char **str);
 
 #endif
