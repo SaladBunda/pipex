@@ -6,7 +6,7 @@
 /*   By: ael-maaz <ael-maaz@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/12 15:33:39 by ael-maaz          #+#    #+#             */
-/*   Updated: 2024/05/31 22:29:48 by ael-maaz         ###   ########.fr       */
+/*   Updated: 2024/06/01 19:50:37 by ael-maaz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,4 +62,11 @@ void	freeing(t_pipx *pipx1, t_pipx *pipx2)
 	i = -1;
 	while (pipx2->prm[++i])
 		free(pipx2->prm[i]);
+}
+#include <string.h>
+
+void	print_error(int code)
+{
+	perror("pipex");
+	exit(code);
 }

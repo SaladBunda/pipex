@@ -6,7 +6,7 @@
 /*   By: ael-maaz <ael-maaz@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 22:01:50 by ael-maaz          #+#    #+#             */
-/*   Updated: 2024/06/01 18:32:27 by ael-maaz         ###   ########.fr       */
+/*   Updated: 2024/06/01 19:53:46 by ael-maaz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,6 @@ char	**check_args(int current, char **av, char **env, t_pipx *px)
 	index = 0;
 	file_io(av, px, current);
 	cmd = second_arg(av, current + 2);
-	int i = -1;
-	while(cmd[++i])
-		dprintf(2,"%s     %p\n",cmd[i],cmd[i]);
 	find_path(env, &index);
 	px->cmd = ft_split(env[index], ':');
 	str = px->cmd[0];
@@ -41,8 +38,7 @@ char	**check_args(int current, char **av, char **env, t_pipx *px)
 	}
 	if (px->cmd[px->pos] == NULL)
 		exit(127);
-	free(str);
-	return (cmd);
+	return (free(str), cmd);
 }
 
 void	child(t_pipx *p, int c, int **pipe_id, t_input io)

@@ -6,7 +6,7 @@
 /*   By: ael-maaz <ael-maaz@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 22:01:50 by ael-maaz          #+#    #+#             */
-/*   Updated: 2024/06/01 15:57:43 by ael-maaz         ###   ########.fr       */
+/*   Updated: 2024/06/01 21:06:31 by ael-maaz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,12 @@ char	**check_args(int count, char **av, char **env, t_pipx *pipx)
 	index = 0;
 	file_io(av, pipx, count);
 	cmd = second_arg(av, count + 2);
+	
+	dprintf(2,"%s       %p\n",cmd[0],cmd[0]);
 	find_path(env, &index);
 	pipx->cmd = ft_split(env[index], ':');
-	str = ft_strtrim(pipx->cmd[0], "PATH=");
-	pipx->cmd[0] = str;
+	str = pipx->cmd[0];
+	pipx->cmd[0] = ft_strtrim(str, "PATH=");
 	free(str);
 	if (access(cmd[0], X_OK) != -1)
 		return (pipx->cmd[0] = NULL, cmd);
@@ -33,11 +35,14 @@ char	**check_args(int count, char **av, char **env, t_pipx *pipx)
 		str = fjoin(pipx->cmd[pipx->pos], cmd[0]);
 		if (access(str, X_OK) != -1)
 			break ;
-		pipx->pos++;
 		free(str);
+		pipx->pos++;
 	}
-	if (pipx->cmd[pipx->pos] == NULL)
+	if (pipx->cmd[pipx->pos] == NULL){
+		free(str);	
 		exit(127);
+	}
+	free(str);
 	return (cmd);
 }
 
@@ -95,17 +100,13 @@ void	pipex(t_pipx pipx1, t_pipx pipx2, int pfd[2], char **env)
 		second_cmd(pipx2, env, pfd, pipx1);
 	close_fds(pfd[1], pfd[0], pipx1.outfile, pipx1.infile);
 }
-void leaks ()
-{
-	system("leaks pipex");
-}
+
 int	main(int ac, char **av, char **env)
 {
 	t_pipx	pipx1;
 	t_pipx	pipx2;
 	int		pfd[2];
 
-	atexit(leaks);
 	if (ac == 5)
 	{
 		init_pipx(&pipx1, &pipx2);
@@ -115,6 +116,7 @@ int	main(int ac, char **av, char **env)
 		while (wait(NULL) > 0)
 			;
 		freeing(&pipx1, &pipx2);
+		system("leaks pipex");
 		exit(EXIT_SUCCESS);
 	}
 	exit(EXIT_FAILURE);
