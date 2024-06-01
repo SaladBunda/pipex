@@ -6,7 +6,7 @@
 /*   By: ael-maaz <ael-maaz@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 22:01:50 by ael-maaz          #+#    #+#             */
-/*   Updated: 2024/05/31 22:57:13 by ael-maaz         ###   ########.fr       */
+/*   Updated: 2024/06/01 16:26:04 by ael-maaz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,9 @@ char	**check_args(int current, char **av, char **env, t_pipx *px)
 	cmd = second_arg(av, current + 2);
 	find_path(env, &index);
 	px->cmd = ft_split(env[index], ':');
-	px->cmd[0] = ft_strtrim(px->cmd[0], "PATH=");
+	str = ft_strtrim(px->cmd[0], "PATH=");;
+	px->cmd[0] = str;
+	free(str);
 	if (access(cmd[0], X_OK) != -1)
 		return (px->cmd[0] = NULL, cmd);
 	while (px->cmd[px->pos])
@@ -36,7 +38,6 @@ char	**check_args(int current, char **av, char **env, t_pipx *px)
 	}
 	if (px->cmd[px->pos] == NULL)
 		exit(127);
-	free(str);
 	return (cmd);
 }
 
@@ -83,7 +84,7 @@ void	loop(t_pipx *px, int *fork_id, int **pipe_id, t_input input)
 		if (fork_id[count] == -1)
 			print_error("Fork", 1);
 		if (fork_id[count] == 0) 
-			child(px, count, pipe_id, input);
+			child(px, count, pipe_id, input);			
 		else 
 		{
 			if (count > 0)
@@ -96,38 +97,7 @@ void	loop(t_pipx *px, int *fork_id, int **pipe_id, t_input input)
 	}
 }
 
-// void	free_f(t_pipx *px, int count,int *fork_id, int **pipe_id)
-// {
-//     int i;
 
-//     for(i = 0; i < count; i++)
-//     {
-//         if(px[i].cmd != NULL)
-//         {
-//             for(int j = 0; px[i].cmd[j] != NULL; j++)
-//                 free(px[i].cmd[j]);
-//             free(px[i].cmd);
-//         }
-
-//         if(px[i].pm != NULL)
-//         {
-//             for(int j = 0; px[i].pm[j] != NULL; j++)
-//                 free(px[i].pm[j]);
-//             free(px[i].pm);
-//         }
-//     }
-// 	free(fork_id);
-// 	if(pipe_id != NULL)
-//     {
-//         for(i = 0; i < count; i++)
-//         {
-//             if(pipe_id[i] != NULL)
-//                 free(pipe_id[i]);
-//         }
-//         free(pipe_id);
-//     }
-//     free(px);
-// }
 
 void	here_doc(t_input input)
 {
@@ -144,18 +114,21 @@ void	here_doc(t_input input)
 		input.ac--;
 		init_pipx(px, input.ac);
 		loop_hd(px, fork_id, pipe_id, input);
-		dprintf()
 		close(pipe_id[input.ac - 4][0]);
 		close(px[0].infile);
 		close(px[0].outfile);
 		free(limiter);
+		free_f(px,input.ac - 4,fork_id,pipe_id);
 		unlink("here_doc.txt");
 		exit(EXIT_SUCCESS);
 	}
 	else
 		exit(EXIT_FAILURE);
 }
-
+void leaks()
+{
+	system("leaks pipex");
+}
 int	main(int ac, char **av, char **env)
 {
 	t_pipx	*px;
@@ -163,6 +136,7 @@ int	main(int ac, char **av, char **env)
 	int		*fork_id;
 	int		**pipe_id;
 
+	atexit(leaks);
 	if (ac > 4)
 	{
 		input = init_input(ac, av, env);
@@ -176,7 +150,7 @@ int	main(int ac, char **av, char **env)
 			close(pipe_id[ac - 4][0]);
 			close(px[0].infile);
 			close(px[0].outfile);
-			// free_f(px,ac - 3,fork_id,pipe_id);
+			free_f(px,ac - 3,fork_id,pipe_id);
 			while (wait(NULL) > 0)
 				;
 			exit(EXIT_SUCCESS);

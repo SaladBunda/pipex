@@ -6,7 +6,7 @@
 /*   By: ael-maaz <ael-maaz@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 22:02:24 by ael-maaz          #+#    #+#             */
-/*   Updated: 2024/05/31 22:45:50 by ael-maaz         ###   ########.fr       */
+/*   Updated: 2024/06/01 15:13:34 by ael-maaz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,5 +69,7 @@ void	init_var_hd(t_pipx **pipx, int **fork_id, int ***pipe_id, int ac);
 int		fcmp(char *s1, char *s2);
 void	reading(char *limiter);
 void	loop_hd(t_pipx *px, int *fork_id, int **pipe_id, t_input input);
+void	free_f(t_pipx *px, int count, int *fork_id, int **pipe_id);
+
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: ael-maaz <ael-maaz@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 17:35:03 by ael-maaz          #+#    #+#             */
-/*   Updated: 2024/05/27 17:59:42 by ael-maaz         ###   ########.fr       */
+/*   Updated: 2024/06/01 16:15:32 by ael-maaz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,16 +63,16 @@ void	init_variables(t_pipx **pipx, int **fork_id, int ***pipe_id, int ac)
 	int	i;
 
 	i = 0;
-	*pipx = malloc((ac - 4) * sizeof(t_pipx));
+	*pipx = malloc((ac - 3) * sizeof(t_pipx));
 	if (!(*pipx))
 		exit(EXIT_FAILURE);
-	*fork_id = malloc((ac - 4) * sizeof(int));
+	*fork_id = malloc((ac - 3) * sizeof(int));
 	if (!(*fork_id))
 		exit(EXIT_FAILURE);
-	*pipe_id = malloc((ac - 4) * sizeof(int *));
+	*pipe_id = malloc((ac - 3) * sizeof(int *));
 	if (!(*pipe_id))
 		exit(EXIT_FAILURE);
-	while (i <= ac - 4)
+	while (i <= ac - 3)
 	{
 		(*pipe_id)[i] = malloc(2 * sizeof(int));
 		if (!(*pipe_id)[i])

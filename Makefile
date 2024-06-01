@@ -4,7 +4,7 @@ DIR = ./srcs/
 BONUS_DIR = ./bonus/
 OBJS = $(SRCS:%.c=$(DIR)%.o)
 OBJB = $(SRCB:%.c=$(BONUS_DIR)%.o)
-CC = clang
+CC = cc
 CFLAGS = -Wall -Wextra -Werror 
 NAME = pipex
 BONUS_NAME = pipex_bonus
