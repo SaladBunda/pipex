@@ -6,7 +6,7 @@
 /*   By: ael-maaz <ael-maaz@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 06:23:51 by ael-maaz          #+#    #+#             */
-/*   Updated: 2024/06/01 20:05:32 by ael-maaz         ###   ########.fr       */
+/*   Updated: 2024/06/01 22:07:12 by ael-maaz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,6 @@ char	**second_arg(char **av, int option)
 		cmd[i] = ft_strtrim(cmd[i], "\'\"");
 		free(str);
 	}
-	// free(str);
 	return (cmd);
 }
 

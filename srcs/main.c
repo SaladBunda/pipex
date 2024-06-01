@@ -6,7 +6,7 @@
 /*   By: ael-maaz <ael-maaz@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 22:01:50 by ael-maaz          #+#    #+#             */
-/*   Updated: 2024/06/01 21:06:31 by ael-maaz         ###   ########.fr       */
+/*   Updated: 2024/06/01 22:14:00 by ael-maaz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,15 +21,13 @@ char	**check_args(int count, char **av, char **env, t_pipx *pipx)
 	index = 0;
 	file_io(av, pipx, count);
 	cmd = second_arg(av, count + 2);
-	
-	dprintf(2,"%s       %p\n",cmd[0],cmd[0]);
 	find_path(env, &index);
 	pipx->cmd = ft_split(env[index], ':');
 	str = pipx->cmd[0];
-	pipx->cmd[0] = ft_strtrim(str, "PATH=");
+	pipx->cmd[0] = ft_strtrim(pipx->cmd[0], "PATH=");
 	free(str);
 	if (access(cmd[0], X_OK) != -1)
-		return (pipx->cmd[0] = NULL, cmd);
+		return (free(pipx->cmd[0]),pipx->cmd[0] = NULL, cmd);
 	while (pipx->cmd[pipx->pos])
 	{
 		str = fjoin(pipx->cmd[pipx->pos], cmd[0]);
@@ -38,10 +36,8 @@ char	**check_args(int count, char **av, char **env, t_pipx *pipx)
 		free(str);
 		pipx->pos++;
 	}
-	if (pipx->cmd[pipx->pos] == NULL){
-		free(str);	
-		exit(127);
-	}
+	if (pipx->cmd[pipx->pos] == NULL)
+		print_error("Pipex",127);
 	free(str);
 	return (cmd);
 }

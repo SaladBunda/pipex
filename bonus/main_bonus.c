@@ -6,7 +6,7 @@
 /*   By: ael-maaz <ael-maaz@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 22:01:50 by ael-maaz          #+#    #+#             */
-/*   Updated: 2024/06/01 19:53:46 by ael-maaz         ###   ########.fr       */
+/*   Updated: 2024/06/01 22:23:15 by ael-maaz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,14 +27,15 @@ char	**check_args(int current, char **av, char **env, t_pipx *px)
 	px->cmd[0]= ft_strtrim(px->cmd[0], "PATH=");
 	free(str);
 	if (access(cmd[0], X_OK) != -1)
-		return (px->cmd[0] = NULL, cmd);
+		return (free(px->cmd[0]),px->cmd[0] = NULL, cmd);
+	
 	while (px->cmd[px->pos])
 	{
 		str = fjoin(px->cmd[px->pos], cmd[0]);
 		if (access(str, X_OK) != -1)
 			break ;
-		px->pos++;
 		free(str);
+		px->pos++;
 	}
 	if (px->cmd[px->pos] == NULL)
 		exit(127);

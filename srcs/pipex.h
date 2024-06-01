@@ -6,7 +6,7 @@
 /*   By: ael-maaz <ael-maaz@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 22:02:24 by ael-maaz          #+#    #+#             */
-/*   Updated: 2024/06/01 19:39:28 by ael-maaz         ###   ########.fr       */
+/*   Updated: 2024/06/01 21:54:57 by ael-maaz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,6 @@ void	find_path(char **env, int *i);
 char	**second_arg(char **av, int option);
 void	close_fds(int n1, int n2, int n3, int n4);
 void	freeing(t_pipx *pipx1, t_pipx *pipx2);
-void	print_error(int code);
+void	print_error(char *str, int code);
 
 #endif

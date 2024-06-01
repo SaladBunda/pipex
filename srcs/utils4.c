@@ -6,7 +6,7 @@
 /*   By: ael-maaz <ael-maaz@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/12 15:33:39 by ael-maaz          #+#    #+#             */
-/*   Updated: 2024/06/01 19:50:37 by ael-maaz         ###   ########.fr       */
+/*   Updated: 2024/06/01 21:54:48 by ael-maaz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,8 +65,11 @@ void	freeing(t_pipx *pipx1, t_pipx *pipx2)
 }
 #include <string.h>
 
-void	print_error(int code)
+void	print_error(char *str, int code)
 {
-	perror("pipex");
+	if(code == 127)
+		write(2,"Pipex: command not found\n",25);
+	else
+		perror(str);
 	exit(code);
 }

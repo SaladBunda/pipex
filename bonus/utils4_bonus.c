@@ -6,7 +6,7 @@
 /*   By: ael-maaz <ael-maaz@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 17:54:24 by ael-maaz          #+#    #+#             */
-/*   Updated: 2024/06/01 19:04:20 by ael-maaz         ###   ########.fr       */
+/*   Updated: 2024/06/01 22:22:57 by ael-maaz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,10 @@ void	free_f(t_pipx *px, int count, int *fork_id, int **pipe_id)
 	{
 		j = -1;
 		while (px[i].cmd[++j] != NULL)
+		{
+			dprintf(2,"%s      %p\n",px[i].cmd[j],px[i].cmd[j]);
 			free(px[i].cmd[j]);
+		}
 		free(px[i].cmd);
 		j = -1;
 		while (px[i].pm[++j] != NULL)
