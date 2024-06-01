@@ -6,7 +6,7 @@
 /*   By: ael-maaz <ael-maaz@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 17:54:24 by ael-maaz          #+#    #+#             */
-/*   Updated: 2024/06/01 16:15:16 by ael-maaz         ###   ########.fr       */
+/*   Updated: 2024/06/01 17:19:38 by ael-maaz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,21 +46,21 @@ void free_f(t_pipx *px, int count, int *fork_id, int **pipe_id)
 	i = -1;
     while(++i < count)
     {
-        if(px[i].cmd != NULL)
-        {
+        // if(px[i].cmd != NULL)
+        // {
             j = -1;
             while(px[i].cmd[++j] != NULL)
                 free(px[i].cmd[j]);
             free(px[i].cmd);
-        }
+        // }
 
-        if(px[i].pm != NULL)
-        {
+        // if(px[i].pm != NULL)
+        // {
             j = -1;
             while(px[i].pm[++j] != NULL)
                 free(px[i].pm[j]);
             free(px[i].pm);
-        }
+        // }
         free(pipe_id[i]);
     }
     free(fork_id);
@@ -89,4 +89,10 @@ void	init_variables_hd(t_pipx **pipx, int **fork_id, int ***pipe_id, int ac)
 			exit(EXIT_FAILURE);
 		i++;
 	}
+}
+
+int free_str(char **str)
+{
+	free(*str);
+	return 0;
 }
