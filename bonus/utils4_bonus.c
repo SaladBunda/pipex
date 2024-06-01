@@ -6,7 +6,7 @@
 /*   By: ael-maaz <ael-maaz@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 17:54:24 by ael-maaz          #+#    #+#             */
-/*   Updated: 2024/06/01 17:19:38 by ael-maaz         ###   ########.fr       */
+/*   Updated: 2024/06/01 18:20:31 by ael-maaz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,32 +40,54 @@ int	fcmp(char *s1, char *s2)
 
 void free_f(t_pipx *px, int count, int *fork_id, int **pipe_id)
 {
-    int	i;
-	int j;
-	
-	i = -1;
-    while(++i < count)
+    int i = 0;
+    while(i < count)
     {
-        // if(px[i].cmd != NULL)
-        // {
-            j = -1;
-            while(px[i].cmd[++j] != NULL)
+        if(px[i].cmd != NULL)
+        {
+            int j = 0;
+            while(px[i].cmd[j] != NULL)
+            {
+				// dprintf(2,"%s\n",px[i].cmd[j]);
                 free(px[i].cmd[j]);
+                px[i].cmd[j] = NULL;
+                j++;
+            }
             free(px[i].cmd);
-        // }
+            px[i].cmd = NULL;
+        }
 
-        // if(px[i].pm != NULL)
-        // {
-            j = -1;
-            while(px[i].pm[++j] != NULL)
+        if(px[i].pm != NULL)
+        {
+            int j = 0;
+            while(px[i].pm[j] != NULL)
+            {
+				dprintf(2,"%s    %p\n",px[i].pm[j],px[i].pm[j]);
                 free(px[i].pm[j]);
+                px[i].pm[j] = NULL;
+                j++;
+            }
             free(px[i].pm);
-        // }
-        free(pipe_id[i]);
+            px[i].pm = NULL;
+        }
+        i++;
     }
     free(fork_id);
-	free(pipe_id);
-	free(px);
+    if(pipe_id != NULL)
+    {
+        i = 0;
+        while(i < count)
+        {
+            if(pipe_id[i] != NULL)
+            {
+                free(pipe_id[i]);
+                pipe_id[i] = NULL;
+            }
+            i++;
+        }
+        free(pipe_id);
+    }
+    free(px);
 }
 
 void	init_variables_hd(t_pipx **pipx, int **fork_id, int ***pipe_id, int ac)
