@@ -6,7 +6,7 @@
 /*   By: ael-maaz <ael-maaz@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 22:01:50 by ael-maaz          #+#    #+#             */
-/*   Updated: 2024/06/01 22:23:15 by ael-maaz         ###   ########.fr       */
+/*   Updated: 2024/06/02 15:30:15 by ael-maaz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,10 @@ char	**check_args(int current, char **av, char **env, t_pipx *px)
 	find_path(env, &index);
 	px->cmd = ft_split(env[index], ':');
 	str = px->cmd[0];
-	px->cmd[0]= ft_strtrim(px->cmd[0], "PATH=");
+	px->cmd[0] = ft_strtrim(px->cmd[0], "PATH=");
 	free(str);
 	if (access(cmd[0], X_OK) != -1)
-		return (free_str(px->cmd),px->cmd[0] = NULL, cmd);
+		return (free_str(px->cmd), px->cmd[0] = NULL, cmd);
 	while (px->cmd[px->pos])
 	{
 		str = fjoin(px->cmd[px->pos], cmd[0]);
@@ -84,7 +84,7 @@ void	loop(t_pipx *px, int *fork_id, int **pipe_id, t_input input)
 		if (fork_id[count] == -1)
 			print_error("Fork", 1);
 		if (fork_id[count] == 0) 
-			child(px, count, pipe_id, input);			
+			child(px, count, pipe_id, input);
 		else 
 		{
 			if (count > 0)
@@ -96,8 +96,6 @@ void	loop(t_pipx *px, int *fork_id, int **pipe_id, t_input input)
 		}
 	}
 }
-
-
 
 void	here_doc(t_input input)
 {
@@ -118,7 +116,7 @@ void	here_doc(t_input input)
 		close(px[0].infile);
 		close(px[0].outfile);
 		free(limiter);
-		free_f(px,input.ac - 4,fork_id,pipe_id);
+		free_f(px, input.ac - 4, fork_id, pipe_id);
 		unlink("here_doc.txt");
 		exit(EXIT_SUCCESS);
 	}
@@ -133,7 +131,6 @@ int	main(int ac, char **av, char **env)
 	int		*fork_id;
 	int		**pipe_id;
 
-	// atexit(leaks);
 	if (ac > 4)
 	{
 		input = init_input(ac, av, env);
@@ -147,7 +144,7 @@ int	main(int ac, char **av, char **env)
 			close(pipe_id[ac - 4][0]);
 			close(px[0].infile);
 			close(px[0].outfile);
-			free_f(px,ac - 3,fork_id,pipe_id);
+			free_f(px, ac - 3, fork_id, pipe_id);
 			while (wait(NULL) > 0)
 				;
 			exit(EXIT_SUCCESS);

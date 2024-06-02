@@ -6,7 +6,7 @@
 /*   By: ael-maaz <ael-maaz@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 17:35:03 by ael-maaz          #+#    #+#             */
-/*   Updated: 2024/06/01 22:07:04 by ael-maaz         ###   ########.fr       */
+/*   Updated: 2024/06/02 14:26:45 by ael-maaz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ char	**second_arg(char **av, int option)
 {
 	char	**cmd;
 	int		i;
-	char *str;
+	char	*str;
 
 	i = -1;
 	cmd = ft_split(av[option], ' ');

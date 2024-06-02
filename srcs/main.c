@@ -6,7 +6,7 @@
 /*   By: ael-maaz <ael-maaz@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 22:01:50 by ael-maaz          #+#    #+#             */
-/*   Updated: 2024/06/01 22:14:00 by ael-maaz         ###   ########.fr       */
+/*   Updated: 2024/06/02 15:21:31 by ael-maaz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ char	**check_args(int count, char **av, char **env, t_pipx *pipx)
 	pipx->cmd[0] = ft_strtrim(pipx->cmd[0], "PATH=");
 	free(str);
 	if (access(cmd[0], X_OK) != -1)
-		return (free(pipx->cmd[0]),pipx->cmd[0] = NULL, cmd);
+		return (free(pipx->cmd[0]), pipx->cmd[0] = NULL, cmd);
 	while (pipx->cmd[pipx->pos])
 	{
 		str = fjoin(pipx->cmd[pipx->pos], cmd[0]);
@@ -37,9 +37,8 @@ char	**check_args(int count, char **av, char **env, t_pipx *pipx)
 		pipx->pos++;
 	}
 	if (pipx->cmd[pipx->pos] == NULL)
-		print_error("Pipex",127);
-	free(str);
-	return (cmd);
+		print_error("Pipex", 127);
+	return (free(str), cmd);
 }
 
 void	first_cmd(t_pipx pipx1, char **env, int pfd[2])
@@ -112,7 +111,6 @@ int	main(int ac, char **av, char **env)
 		while (wait(NULL) > 0)
 			;
 		freeing(&pipx1, &pipx2);
-		// system("leaks pipex");
 		exit(EXIT_SUCCESS);
 	}
 	exit(EXIT_FAILURE);

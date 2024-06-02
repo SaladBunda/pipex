@@ -6,7 +6,7 @@
 /*   By: ael-maaz <ael-maaz@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 17:54:24 by ael-maaz          #+#    #+#             */
-/*   Updated: 2024/06/01 22:22:57 by ael-maaz         ###   ########.fr       */
+/*   Updated: 2024/06/02 14:26:34 by ael-maaz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,12 +84,11 @@ void	init_variables_hd(t_pipx **pipx, int **fork_id, int ***pipe_id, int ac)
 	}
 }
 
-void free_str(char **str)
+void	free_str(char **str)
 {
 	int	i;
 
 	i = -1;
 	while (str[++i])
 		free(str[i]);
-	// free(str);
 }
