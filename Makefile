@@ -17,7 +17,7 @@ $(BONUS_NAME): $(OBJB) $(BONUS_DIR)pipex_bonus.h
 	$(CC) $(OBJB) $(IFLAGS) -o $(BONUS_NAME) 
 
 $(NAME): $(OBJS) $(DIR)pipex.h
-	$(CC) $(OBJS) $(IFLAGS) -o $(NAME) #-g -fsanitize=address
+	$(CC) $(OBJS) $(IFLAGS) -o $(NAME)
 
 $(DIR)%.o: $(DIR)%.c $(DIR)pipex.h
 	$(CC) $(CFLAGS) -c $< -o $@
